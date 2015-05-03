@@ -31,3 +31,45 @@ void init_msl(MagtiSun_Login* msl)
     msl->user = NULL;
     msl->pwd = NULL;
 }
+
+
+/*---------------------------------------------
+| Get authorisation at magtifun
+---------------------------------------------*/
+int make_login(char *user, char* pwd) 
+{
+    /* Used variables */
+    CURL *curl;
+    CURLcode res;
+    char login_url[128];
+    char post_val[64];
+    int ret = 0;
+
+    /* Get ready for login */
+    strcpy(login_url, "http://www.magtifun.ge/index.php?page=11&lang=ge");
+    sprintf(post_val, "user=%s&password=%s", user, pwd);
+
+    /* Initialise curl */
+    curl = curl_easy_init();
+
+    /* Check curl */
+    if (curl) 
+    {
+        /* Get ready */
+        curl_easy_setopt(curl, CURLOPT_URL, login_url);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_val);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_val));
+
+        /* Send post request to magtifun */
+        res = curl_easy_perform(curl);
+
+        /* Check everything is ok */
+        if(res != CURLE_OK) ret = -1;
+
+        /* Cleanup */
+        curl_easy_cleanup(curl);
+    }
+
+    /* Return with status */
+    return ret;
+}

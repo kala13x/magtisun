@@ -35,3 +35,9 @@ typedef struct {
 | Initialise magtisun login variables
 ---------------------------------------------*/
 void init_msl(MagtiSun_Login* msl);
+
+
+/*---------------------------------------------
+| Get authorisation at magtifun
+---------------------------------------------*/
+int make_login(char *user, char* pwd);

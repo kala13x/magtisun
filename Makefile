@@ -1,4 +1,4 @@
-LIB = 
+LIB = -lcurl
 OBJ = o
 CFLAGS = -g -O2 -Wall
 
