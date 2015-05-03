@@ -14,10 +14,10 @@ options are:
 ```
 
 ###Compilation
-Compilation of project is possible with Makefile (just type 'make' in terminal).
+Compilation of this project is possible with Makefile (just type 'make' in terminal).
 
 ###Dependencies
-Make sure you have curl development library installed on your computer to compile magtisun.
+Make sure you have [curl development library](https://github.com/bagder/curl) installed on your computer to compile magtisun.
 
 ###Todo
 - add invisible password input
@@ -39,3 +39,6 @@ MagtiSun-SMS: 0.0.2 Beta Build 4 (May  4 2015)
 2015.05.04-00:57:16 - [LIVE] Sending message...
 2015.05.04-00:57:17 - [LIVE] Message sent
 ```
+
+###Get more info from blog
+- [http://off-sec.com/](http://off-sec.com)
