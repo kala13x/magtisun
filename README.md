@@ -12,6 +12,7 @@ options are:
  -i                  # get and print user information
  -h                  # prints version and usage\n");
 ```
+If you dont want to make visible your password while typing, just dont write it as argument.
 Software has invisible password input for security reasons.
 
 ###Compilation
