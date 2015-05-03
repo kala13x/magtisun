@@ -34,7 +34,7 @@ void cleanup(int sig)
     slog(0, "[LIVE] Cleanup on exit\n");
     remove(COOCKIE_LOGIN);
     remove(COOCKIE_SEND);
-    remove(SAVE_FILE)
+    remove(SAVE_FILE);
     exit(0);
 }
 
