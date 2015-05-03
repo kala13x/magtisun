@@ -24,7 +24,9 @@
 /* Coockies files */
 #define COOCKIE_LOGIN "cookie-name"
 #define COOCKIE_SEND "cookie-name-send"
-#define COOCKIE_FILE "cookie.tmp"
+#define COOCKIE_FILE "cookie"
+#define DISCARD_FILE "/dev/null"
+#define SAVE_FILE "response"
 
 /*---------------------------------------------
 | Structure of user variables
@@ -34,6 +36,7 @@ typedef struct {
     char num[16];
     char user[16];
     char pwd[16];
+    char* res;
 } MagtiSun_Login;
 
 

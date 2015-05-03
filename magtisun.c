@@ -100,9 +100,7 @@ int main(int argc, char **argv)
     slog(0, "[LIVE] Sending sms...\n");
     ret = login_and_send(&msl);
     if (ret>=0) slog(0, "[LIVE] Message sent\n");
+    else slog(0, "[ERROR] Can not send sms\n");
 
-    /* Cleanup on exit */
-    remove(COOCKIE_LOGIN);
-    remove(COOCKIE_SEND);
     return 0;
 }

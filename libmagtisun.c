@@ -66,7 +66,40 @@ void cli_init_sms(MagtiSun_Login* msl)
 ---------------------------------------------*/
 size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
+    /* Write in file */
     return fwrite(ptr, size, nmemb, stream);
+}
+
+
+/*---------------------------------------------
+| Check status in response
+---------------------------------------------*/
+int check_status(char *fname) 
+{
+    /* Used variables */
+    FILE* fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    int ret = -1;
+
+    /* Open templorary file */
+    fp = fopen(fname, "r");
+    if (fp != NULL) 
+    {
+        /* Get status */
+        while ((read = getline(&line, &len, fp)) != -1) 
+        {
+            if(strstr(line, "success") != NULL) 
+            {
+                ret = 1;
+                break;
+            }
+        }
+        fclose(fp);
+    }
+
+    return ret;
 }
 
 
@@ -181,16 +214,13 @@ int login_and_send(MagtiSun_Login* msl)
     /* Used variables */
     CURL *curl;
     CURLcode res;
-    FILE *outfile;
+    FILE *fp;
     char login_url[128];
     char login_val[64];
     char sms_url[128];
     char sms_val[64];
-    int ret = 0;
-
-    /* Remove existing coockie file */
-    remove(COOCKIE_LOGIN);
-    remove(COOCKIE_SEND);
+    int done = 0;
+    int ret = -1;
 
     /* Get ready for login */
     strcpy(login_url, "http://www.magtifun.ge/index.php?page=11&lang=ge");
@@ -203,9 +233,11 @@ int login_and_send(MagtiSun_Login* msl)
     curl = curl_easy_init();
 
     /* Check curl */
-    if (curl) 
+    while (curl && !done) 
     {
-        outfile = fopen("/dev/null", "w");
+        /* Open output fileponter */
+        fp = fopen(DISCARD_FILE, "w");
+        if (fp == NULL) break;
 
         /* Get ready for login */
         curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
@@ -217,38 +249,53 @@ int login_and_send(MagtiSun_Login* msl)
         curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
         curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_LOGIN);
         curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 
         /* Send post request to magtifun */
         res = curl_easy_perform(curl);
+        fclose(fp);
 
         /* Check everything is ok */
-        if(res != CURLE_OK) ret = -1;
+        if(res != CURLE_OK) break;
+
+        /* Open output fileponter */
+        fp = fopen(SAVE_FILE, "w");
+        if (fp == NULL) break;
 
         /* Get ready send */
         curl_easy_setopt(curl, CURLOPT_URL, &sms_url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &sms_val);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(sms_val));
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
-        curl_easy_setopt(curl, CURLOPT_POST, 1);
         curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
         curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_SEND);
         curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 
         /* Send post request to magtifun */
         res = curl_easy_perform(curl);
 
         /* Check everything is ok */
-        if(res != CURLE_OK) ret = -1;
+        if(res != CURLE_OK) break;
+        fclose(fp);
 
-        /* Cleanup */
-        curl_easy_cleanup(curl);
-        fclose(outfile);
+        /* Check response */
+        if(check_status(SAVE_FILE) >= 0) ret = 1;
+
+        /* Exit from while */
+        done = 1;
     }
 
-    /* Return with status */
+    /* Cleanup curl */
+    if (curl) curl_easy_cleanup(curl);
+    curl_global_cleanup();
+
+    /* Delete coockies */
+    remove(COOCKIE_LOGIN);
+    remove(COOCKIE_SEND);
+    remove(SAVE_FILE);
+
+    /* Return status */
     return ret;
 }
