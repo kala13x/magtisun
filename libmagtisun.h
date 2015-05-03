@@ -19,59 +19,19 @@
 
 ---------------------------------------------------------------------------*/
 
-
-#include "libmagtisun.h"
 #include "stdinc.h"
-#include "slog.h"
-#include "info.h"
 
 
 /*---------------------------------------------
-| Parse cli arguments
+| Structure of user variables
 ---------------------------------------------*/
-static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
-{
-    int c;
-    while ( (c = getopt(argc, argv, "u:p:h1")) != -1) {
-        switch (c) {
-        case 'u':
-            msl->user = strdup(optarg);
-            break;
-        case 'p':
-            msl->pwd = strdup(optarg);
-            break;
-        case 'h':
-        default:
-            usage();
-            return -1;
-        }
-    }
-
-    return 0;
-}
+typedef struct {
+    char* user;
+    char* pwd;
+} MagtiSun_Login;
 
 
 /*---------------------------------------------
-| Main function
+| Initialise magtisun login variables
 ---------------------------------------------*/
-int main(int argc, char **argv)
-{
-    /* Used variables */
-    MagtiSun_Login msl;
-
-    /* Initialise variables */
-    init_slog("magtisun", 3);
-    init_msl(&msl);
-
-    /* Parse Commandline Arguments */
-    if (parse_arguments(argc, argv, &msl)) return 0;
-
-    /* Check valid user and password */
-    if (!msl.user || !msl.pwd) usage();
-
-    /* Print user information */
-    slog(0, "Username: %s", msl.user);
-    slog(0, "Password: %s", msl.pwd);
-
-    return 0;
-}
+void init_msl(MagtiSun_Login* msl);
