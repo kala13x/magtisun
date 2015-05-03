@@ -44,5 +44,4 @@ void usage(void)
     printf("   -p <password>       # magtifun password\n");
     printf("   -h                  # prints version and usage\n");
     printf("\n");
-    exit(-1);
 }

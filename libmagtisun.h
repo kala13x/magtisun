@@ -21,6 +21,10 @@
 
 #include "stdinc.h"
 
+/* Coockies files */
+#define COOCKIE_LOGIN "cookie-name"
+#define COOCKIE_SEND "cookie-name-send"
+
 
 /*---------------------------------------------
 | Structure of user variables

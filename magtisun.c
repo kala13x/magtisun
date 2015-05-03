@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 {
     /* Used variables */
     MagtiSun_Login msl;
+    int ret;
 
     /* Initialise variables */
     init_slog("magtisun", 3);
@@ -67,11 +68,20 @@ int main(int argc, char **argv)
     if (parse_arguments(argc, argv, &msl)) return 0;
 
     /* Check valid user and password */
-    if (!msl.user || !msl.pwd) usage();
+    if (!msl.user || !msl.pwd) 
+    {
+        usage();
+        slog(0, "[ERROR] Username and/or Password is not given");
+        return 1;
+    }
 
     /* Print user information */
     slog(0, "Username: %s", msl.user);
     slog(0, "Password: %s", msl.pwd);
+
+    /* Login to magtifun */
+    ret = make_login(msl.user, msl.pwd);
+    if (ret>=0) slog(0, "[LIVE] Successfuly authorised");
 
     return 0;
 }
