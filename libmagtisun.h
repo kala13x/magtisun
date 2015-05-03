@@ -44,6 +44,18 @@ void init_msl(MagtiSun_Login* msl);
 
 
 /*---------------------------------------------
+| Read login information
+---------------------------------------------*/
+void cli_init_msl(MagtiSun_Login* msl);
+
+
+/*---------------------------------------------
+| Read sms information
+---------------------------------------------*/
+void cli_init_sms(MagtiSun_Login* msl);
+
+
+/*---------------------------------------------
 | Get authorisation at magtifun
 ---------------------------------------------*/
 int make_login(char *user, char* pwd);

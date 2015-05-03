@@ -87,25 +87,17 @@ int main(int argc, char **argv)
     {
         usage();
         slog(0, "[ERROR] Username and/or Password is not given");
-        return 1;
+        cli_init_msl(&msl);
     }
 
     /* Print user information */
     slog(0, "[LIVE] Authoisation with User: %s", msl.user);
 
-    /* Login to magtifun */
-    ret = make_login(msl.user, msl.pwd);
-    if (ret>=0) slog(0, "[LIVE] Successfuly authorised");
-
-    ret = send_sms("598998592", "traki");
-    if (ret>=0) slog(0, "[LIVE] Message sent");
-
-    strcpy(msl.num, "598998592");
-    strcpy(msl.txt, "traki 2");
+    /* Read sms info from user input */
+    cli_init_sms(&msl);
 
     ret = login_and_send(&msl);
     if (ret>=0) slog(0, "[LIVE] Message sent");
-
 
     /* Cleanup on exit */
     remove(COOCKIE_LOGIN);

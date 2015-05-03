@@ -36,6 +36,30 @@ void init_msl(MagtiSun_Login* msl)
 
 
 /*---------------------------------------------
+| Read login information
+---------------------------------------------*/
+void cli_init_msl(MagtiSun_Login* msl) 
+{
+    printf("Enter Username: ");
+    scanf("%s", msl->user);
+    printf("Enter Password: ");
+    scanf("%s", msl->pwd);
+}
+
+
+/*---------------------------------------------
+| Read sms information
+---------------------------------------------*/
+void cli_init_sms(MagtiSun_Login* msl) 
+{
+    printf("Enter Number: ");
+    scanf("%s", msl->num);
+    printf("Enter Text: ");
+    scanf("%s", msl->txt);
+}
+
+
+/*---------------------------------------------
 | Get authorisation at magtifun
 ---------------------------------------------*/
 int make_login(char *user, char* pwd) 
