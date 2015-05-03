@@ -1,4 +1,4 @@
-MagtiSun - Version: 0.0.2 Beta BUILD 4
+MagtiSun - Version: 0.0.3 Beta BUILD 8
 ----
 
 MagtiSun is MagtiFun Library and SMS Sender for CLI Applications. Softwear is written for educational purposes and is distributed in the hope that it will be useful for anyone interested in this field.
@@ -12,6 +12,7 @@ options are:
  -i                  # get and print user information
  -h                  # prints version and usage\n");
 ```
+Software has invisible password input for security reasons.
 
 ###Compilation
 Compilation of this project is possible with Makefile (just type 'make' in terminal).
@@ -20,7 +21,6 @@ Compilation of this project is possible with Makefile (just type 'make' in termi
 Make sure you have [curl development library](https://github.com/bagder/curl) installed on your computer to compile magtisun.
 
 ###Todo
-- add invisible password input
 - get and print user information
 
 ###Simple CLI interface

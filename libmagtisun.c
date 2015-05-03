@@ -31,9 +31,9 @@
 void init_msl(MagtiSun_Login* msl)
 {
     bzero(msl->user, sizeof(msl->user));
-    bzero(msl->pwd, sizeof(msl->pwd));
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
+    msl->pwd = NULL;
     msl->info = 0;
 }
 
@@ -45,8 +45,8 @@ void cli_init_msl(MagtiSun_Login* msl)
 {
     slog(0, "[INPUT] Enter Username: ");
     scanf("%s", msl->user);
-    slog(0, "[INPUT] Enter Password: ");
-    scanf("%s", msl->pwd);
+    ret_slog("[INPUT] Enter Password: ");
+    msl->pwd = getpass(ret_slog("[INPUT] Enter Password: "));
 }
 
 

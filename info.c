@@ -42,6 +42,7 @@ void usage(void)
     printf("options are:\n");
     printf("   -u <username>       # magtifun user name\n");
     printf("   -p <password>       # magtifun password\n");
+    printf("   -i                  # get and print user information\n");
     printf("   -h                  # prints version and usage\n");
     printf("\n");
 }

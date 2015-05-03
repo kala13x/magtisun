@@ -50,7 +50,7 @@ static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
             strcpy(msl->user, optarg);
             break;
         case 'p':
-            strcpy(msl->pwd, optarg);
+            msl->pwd = strdup(optarg);
             break;
         case 'i':
             msl->info = 1;
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     }
 
     /* Check valid user and password */
-    if (strlen(msl.user) < 4 || strlen(msl.pwd) < 4) 
+    if (strlen(msl.user) < 4 || !msl.pwd) 
     {
         slog(0, "[WARN] Username and/or Password is not given\n");
         slog(0, "[INFO] Check usage with parameter -h\n");
