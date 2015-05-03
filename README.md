@@ -1,7 +1,7 @@
 MagtiSun - Version: 0.0.3 Beta BUILD 8
 ----
 
-MagtiSun is MagtiFun Library and SMS Sender for CLI Applications. Softwear is written for educational purposes and is distributed in the hope that it will be useful for anyone interested in this field.
+MagtiSun is MagtiFun Library and SMS Sender for CLI Applications. Software is written for educational purposes and is distributed in the hope that it will be useful for anyone interested in this field.
 
 ###Usage
 ```
