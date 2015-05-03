@@ -17,6 +17,10 @@ Software has invisible password input for security reasons.
 
 ###Compilation
 Compilation of this project is possible with Makefile (just type 'make' in terminal).
+```
+make
+sudo make install
+```
 
 ###Dependencies
 Make sure you have [curl development library](https://github.com/bagder/curl) installed on your computer to compile magtisun.
