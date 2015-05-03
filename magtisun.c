@@ -27,6 +27,18 @@
 
 
 /*---------------------------------------------
+| Cleanup on exit
+---------------------------------------------*/
+void cleanup(int sig)
+{
+    slog(0, "[LIVE] Cleanup on exit");
+    remove(COOCKIE_LOGIN);
+    remove(COOCKIE_SEND);
+    exit(0);
+}
+
+
+/*---------------------------------------------
 | Parse cli arguments
 ---------------------------------------------*/
 static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
@@ -58,11 +70,14 @@ int main(int argc, char **argv)
 {
     /* Used variables */
     MagtiSun_Login msl;
-    int ret;
+    int ret = 0;
 
     /* Initialise variables */
     init_slog("magtisun", 3);
     init_msl(&msl);
+
+    /* Catch exit signal */
+    signal(SIGINT, cleanup);
 
     /* Parse Commandline Arguments */
     if (parse_arguments(argc, argv, &msl)) return 0;
@@ -76,8 +91,8 @@ int main(int argc, char **argv)
     }
 
     /* Print user information */
-    slog(0, "Username: %s", msl.user);
-    slog(0, "Password: %s", msl.pwd);
+    slog(0, "[LIVE] Authoisation with User: %s <=> Password: %s", 
+        msl.user, msl.pwd);
 
     /* Login to magtifun */
     ret = make_login(msl.user, msl.pwd);

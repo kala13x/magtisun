@@ -34,15 +34,6 @@ void init_msl(MagtiSun_Login* msl)
 
 
 /*---------------------------------------------
-| Write callback to save coockies in file
----------------------------------------------*/
-size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
-    size_t written = fwrite(ptr, size, nmemb, stream);
-    return written;
-}
-
-
-/*---------------------------------------------
 | Get authorisation at magtifun
 ---------------------------------------------*/
 int make_login(char *user, char* pwd) 
@@ -69,6 +60,7 @@ int make_login(char *user, char* pwd)
     if (curl) 
     {
         /* Get ready */
+        curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_easy_setopt(curl, CURLOPT_URL, login_url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_val);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_val));
