@@ -32,7 +32,7 @@
 | Structure of user variables
 ---------------------------------------------*/
 typedef struct {
-	char* res;
+    char* res;
     char* pwd;
     char txt[512];
     char num[16];
