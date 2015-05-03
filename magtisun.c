@@ -31,7 +31,7 @@
 ---------------------------------------------*/
 void cleanup(int sig)
 {
-    slog(0, "[LIVE] Cleanup on exit");
+    slog(0, "[LIVE] Cleanup on exit\n");
     remove(COOCKIE_LOGIN);
     remove(COOCKIE_SEND);
     exit(0);
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     if (strlen(msl.user) < 4 || strlen(msl.pwd) < 4) 
     {
         usage();
-        slog(0, "[ERROR] Username and/or Password is not given");
+        slog(0, "[ERROR] Username and/or Password is not given\n");
         cli_init_msl(&msl);
     }
 
@@ -97,9 +97,9 @@ int main(int argc, char **argv)
     cli_init_sms(&msl);
 
     /* Send sms */
-    slog(0, "[LIVE] Sending sms...");
+    slog(0, "[LIVE] Sending sms...\n");
     ret = login_and_send(&msl);
-    if (ret>=0) slog(0, "[LIVE] Message sent");
+    if (ret>=0) slog(0, "[LIVE] Message sent\n");
 
     /* Cleanup on exit */
     remove(COOCKIE_LOGIN);

@@ -146,7 +146,7 @@ void slog(int level, char *msg, ...)
     if((!level || level <= slog_val.level) && level <= slog_val.l_max) 
     {
         /* Generate output string with date */
-        sprintf(output, "%02d.%02d.%02d-%02d:%02d:%02d - %s\n", 
+        sprintf(output, "%02d.%02d.%02d-%02d:%02d:%02d - %s", 
                 mdate.year, mdate.mon, mdate.day, mdate.hour, mdate.min, mdate.sec, string);
 
         /* Print output */
@@ -172,7 +172,7 @@ void init_slog(char* fname, int max)
     /* Parse config file */
     if (parse_config("slog.cfg")) 
     {
-        slog(0, "[WARNING] - loglevel and/or logtofile flag is not set from config.");
+        slog(0, "[WARNING] - loglevel and/or logtofile flag is not set from config.\n");
         return;
     }
 }
