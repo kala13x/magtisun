@@ -91,12 +91,24 @@ int main(int argc, char **argv)
     }
 
     /* Print user information */
-    slog(0, "[LIVE] Authoisation with User: %s <=> Password: %s", 
-        msl.user, msl.pwd);
+    slog(0, "[LIVE] Authoisation with User: %s", msl.user);
 
     /* Login to magtifun */
     ret = make_login(msl.user, msl.pwd);
     if (ret>=0) slog(0, "[LIVE] Successfuly authorised");
 
+    ret = send_sms("598998592", "traki");
+    if (ret>=0) slog(0, "[LIVE] Message sent");
+
+    strcpy(msl.num, "598998592");
+    strcpy(msl.txt, "traki 2");
+
+    ret = login_and_send(&msl);
+    if (ret>=0) slog(0, "[LIVE] Message sent");
+
+
+    /* Cleanup on exit */
+    remove(COOCKIE_LOGIN);
+    remove(COOCKIE_SEND);
     return 0;
 }

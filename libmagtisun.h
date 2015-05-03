@@ -24,12 +24,14 @@
 /* Coockies files */
 #define COOCKIE_LOGIN "cookie-name"
 #define COOCKIE_SEND "cookie-name-send"
-
+#define COOCKIE_FILE "cookie.tmp"
 
 /*---------------------------------------------
 | Structure of user variables
 ---------------------------------------------*/
 typedef struct {
+    char txt[512];
+    char num[16];
     char* user;
     char* pwd;
 } MagtiSun_Login;
@@ -45,3 +47,15 @@ void init_msl(MagtiSun_Login* msl);
 | Get authorisation at magtifun
 ---------------------------------------------*/
 int make_login(char *user, char* pwd);
+
+
+/*---------------------------------------------
+| Send sms with magtifun
+---------------------------------------------*/
+int send_sms(char *num, char* txt);
+
+
+/*---------------------------------------------
+| Authorise and send sms
+---------------------------------------------*/
+int login_and_send(MagtiSun_Login* msl);
