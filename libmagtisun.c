@@ -34,6 +34,7 @@ void init_msl(MagtiSun_Login* msl)
     bzero(msl->pwd, sizeof(msl->pwd));
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
+    msl->info = 0;
 }
 
 
@@ -104,105 +105,12 @@ int check_status(char *fname)
 
 
 /*---------------------------------------------
-| Get authorisation at magtifun
+| Get information about user
 ---------------------------------------------*/
-int make_login(char *user, char* pwd) 
+int get_info(MagtiSun_Login* msl) 
 {
-    /* Used variables */
-    CURL *curl;
-    CURLcode res;
-    char login_url[128];
-    char post_val[64];
-    int ret = 0;
-
-    /* Remove existing coockie file */
-    remove(COOCKIE_LOGIN);
-
-    /* Get ready for login */
-    strcpy(login_url, "http://www.magtifun.ge/index.php?page=11&lang=ge");
-    sprintf(post_val, "user=%s&password=%s", user, pwd);
-
-    /* Initialise curl */
-    curl_global_init(CURL_GLOBAL_ALL);
-    curl = curl_easy_init();
-
-    /* Check curl */
-    if (curl) 
-    {
-        /* Get ready */
-        curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_easy_setopt(curl, CURLOPT_URL, &login_url);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &post_val);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_val));
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
-        curl_easy_setopt(curl, CURLOPT_POST, 1);
-        curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
-        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_LOGIN);
-        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
-
-        /* Send post request to magtifun */
-        res = curl_easy_perform(curl);
-
-        /* Check everything is ok */
-        if(res != CURLE_OK) ret = -1;
-
-        /* Cleanup */
-        curl_easy_cleanup(curl);
-    }
-
-    /* Return with status */
-    return ret;
-}
-
-
-/*---------------------------------------------
-| Send sms with magtifun
----------------------------------------------*/
-int send_sms(char *num, char* txt) 
-{
-    /* Used variables */
-    CURL *curl;
-    CURLcode res;
-    char sms_url[128];
-    char post_val[64];
-    int ret = 0;
-
-    /* Remove existing coockie file */
-    remove(COOCKIE_SEND);
-
-    /* Get ready for login */
-    strcpy(sms_url, "http://www.magtifun.ge/scripts/sms_send.php");
-    sprintf(post_val, "recipients=%s&message_body=%s", num, txt);
-
-    /* Initialise curl */
-    curl_global_init(CURL_GLOBAL_ALL);
-    curl = curl_easy_init();
-
-    /* Check curl */
-    if (curl) 
-    {
-        /* Get ready */
-        curl_easy_setopt(curl, CURLOPT_URL, &sms_url);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &post_val);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_val));
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
-        curl_easy_setopt(curl, CURLOPT_POST, 1);
-        curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
-        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_SEND);
-        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
-
-        /* Send post request to magtifun */
-        res = curl_easy_perform(curl);
-
-        /* Check everything is ok */
-        if(res != CURLE_OK) ret = -1;
-
-        /* Cleanup */
-        curl_easy_cleanup(curl);
-    }
-
-    /* Return with status */
-    return ret;
+    slog(0, "Get infotmation is added to TODO list\n");
+    exit(0);
 }
 
 

@@ -32,11 +32,12 @@
 | Structure of user variables
 ---------------------------------------------*/
 typedef struct {
+	char* res;
     char txt[512];
     char num[16];
     char user[16];
     char pwd[16];
-    char* res;
+    short info;
 } MagtiSun_Login;
 
 
@@ -59,15 +60,9 @@ void cli_init_sms(MagtiSun_Login* msl);
 
 
 /*---------------------------------------------
-| Get authorisation at magtifun
+| Get information about user
 ---------------------------------------------*/
-int make_login(char *user, char* pwd);
-
-
-/*---------------------------------------------
-| Send sms with magtifun
----------------------------------------------*/
-int send_sms(char *num, char* txt);
+int get_info(MagtiSun_Login* msl);
 
 
 /*---------------------------------------------

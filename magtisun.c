@@ -44,13 +44,16 @@ void cleanup(int sig)
 static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
 {
     int c;
-    while ( (c = getopt(argc, argv, "u:p:h1")) != -1) {
+    while ( (c = getopt(argc, argv, "u:p:i1:h1")) != -1) {
         switch (c) {
         case 'u':
             strcpy(msl->user, optarg);
             break;
         case 'p':
             strcpy(msl->pwd, optarg);
+            break;
+        case 'i':
+            msl->info = 1;
             break;
         case 'h':
         default:
@@ -71,6 +74,9 @@ int main(int argc, char **argv)
     MagtiSun_Login msl;
     int ret = 0;
 
+    /* Greet users */
+    greet();
+
     /* Initialise variables */
     init_slog("magtisun", 3);
     init_msl(&msl);
@@ -88,16 +94,20 @@ int main(int argc, char **argv)
     /* Check valid user and password */
     if (strlen(msl.user) < 4 || strlen(msl.pwd) < 4) 
     {
-        usage();
-        slog(0, "[ERROR] Username and/or Password is not given\n");
+        slog(0, "[WARN] Username and/or Password is not given\n");
+        slog(0, "[INFO] Check usage with parameter -h\n");
         cli_init_msl(&msl);
     }
+
+    /* Check info */
+    if (msl.info) get_info(&msl);
 
     /* Read sms info from user input */
     cli_init_sms(&msl);
 
     /* Send sms */
-    slog(0, "[LIVE] Sending sms...\n");
+    slog(0, "[LIVE] Sending message...\n");
+
     ret = login_and_send(&msl);
     if (ret>=0) slog(0, "[LIVE] Message sent\n");
     else slog(0, "[ERROR] Can not send sms\n");
