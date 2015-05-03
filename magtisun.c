@@ -47,14 +47,13 @@ static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
     while ( (c = getopt(argc, argv, "u:p:h1")) != -1) {
         switch (c) {
         case 'u':
-            msl->user = strdup(optarg);
+            strcpy(msl->user, optarg);
             break;
         case 'p':
-            msl->pwd = strdup(optarg);
+            strcpy(msl->pwd, optarg);
             break;
         case 'h':
         default:
-            usage();
             return -1;
         }
     }
@@ -80,22 +79,25 @@ int main(int argc, char **argv)
     signal(SIGINT, cleanup);
 
     /* Parse Commandline Arguments */
-    if (parse_arguments(argc, argv, &msl)) return 0;
+    if (parse_arguments(argc, argv, &msl) < 0) 
+    { 
+        usage();
+        return 0;
+    }
 
     /* Check valid user and password */
-    if (!msl.user || !msl.pwd) 
+    if (strlen(msl.user) < 4 || strlen(msl.pwd) < 4) 
     {
         usage();
         slog(0, "[ERROR] Username and/or Password is not given");
         cli_init_msl(&msl);
     }
 
-    /* Print user information */
-    slog(0, "[LIVE] Authoisation with User: %s", msl.user);
-
     /* Read sms info from user input */
     cli_init_sms(&msl);
 
+    /* Send sms */
+    slog(0, "[LIVE] Sending sms...");
     ret = login_and_send(&msl);
     if (ret>=0) slog(0, "[LIVE] Message sent");
 

@@ -32,8 +32,8 @@
 typedef struct {
     char txt[512];
     char num[16];
-    char* user;
-    char* pwd;
+    char user[16];
+    char pwd[16];
 } MagtiSun_Login;
 
 

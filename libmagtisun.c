@@ -19,6 +19,7 @@
 
 ---------------------------------------------------------------------------*/
 
+
 #include "stdinc.h"
 #include "libmagtisun.h"
 
@@ -28,8 +29,8 @@
 ---------------------------------------------*/
 void init_msl(MagtiSun_Login* msl)
 {
-    msl->user = NULL;
-    msl->pwd = NULL;
+    bzero(msl->user, sizeof(msl->user));
+    bzero(msl->pwd, sizeof(msl->pwd));
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
 }
