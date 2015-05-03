@@ -46,4 +46,4 @@ MagtiSun-SMS: 0.0.2 Beta Build 4 (May  4 2015)
 ```
 
 ###Get more info from blog
-- [http://off-sec.com/](http://off-sec.com)
+- Offencive-Security Georgia [http://off-sec.com/](http://off-sec.com)
