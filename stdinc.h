@@ -27,3 +27,4 @@ Desc:   Standart includes for magtisun project
 
 /* Dependency includes */
 #include <curl/curl.h>
+#include <openssl/aes.h>

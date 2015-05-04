@@ -59,7 +59,9 @@ static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
             msl->login = 1;
             break;
         case 'o':
+            slog(0, "[LIVE] Logged out");
             remove(LOGIN_FILE);
+            exit(1);
             break;
         case 'i':
             msl->info = 1;
@@ -102,17 +104,23 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    /* Check valid user */
-    if (strlen(msl.user) < 4) 
+    /* Log in user */
+    if (msl.login) 
     {
-        slog(0, "[INFO] Check usage with parameter -h");
+        if(msl_login(&msl)) 
+            slog(0, "[LIVE] Logged in");
     }
 
-    /* User imput */
-    msl_cli_init(&msl);
+    /* Check valid user */
+    if (strlen(msl.user) < 4 && !msl.pwd) 
+    {
+        slog(0, "[LIVE] Not logged in");
+        msl_cli_init(&msl);
+    }
 
-    /* Log in user */
-    if (msl.login) msl_login(&msl);
+    /* Check logged in user */
+    if (msl.logged) 
+        slog(0, "[LIVE] Logged in as: %s", msl.user);
 
     /* Check info */
     if (msl.info) msl_get_info(&msl);

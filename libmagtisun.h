@@ -41,6 +41,7 @@ typedef struct {
     char user[16];
     short info;
     short login;
+    short logged;
 } MagtiSunLib;
 
 

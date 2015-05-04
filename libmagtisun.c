@@ -30,12 +30,41 @@
 ---------------------------------------------*/
 void msl_init(MagtiSunLib* msl)
 {
+    /* Used variables */
+    FILE* fp;
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    char* user;
+
+    /* Clear values */
     bzero(msl->user, sizeof(msl->user));
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
     msl->pwd = NULL;
     msl->login = 0;
     msl->info = 0;
+    msl->logged = 0;
+
+    /* Open templorary file */
+    fp = fopen(LOGIN_FILE, "r");
+    if (fp != NULL) 
+    {
+        /* Get status */
+        while ((read = getline(&line, &len, fp)) != -1) 
+        {
+            /* Find user in file */
+            if(strstr(line, "user") != NULL) 
+            {
+                /* Get user info */
+                user = strtok(line, ":");
+                msl->pwd = strtok(NULL, ":");
+                strcpy(msl->user, user);
+                msl->logged = 1;
+            }
+        }
+        fclose(fp);
+    }
 }
 
 
@@ -120,7 +149,21 @@ int msl_get_info(MagtiSunLib* msl)
 ---------------------------------------------*/
 int msl_login(MagtiSunLib* msl) 
 {
-    slog(0, "[TODO] User login is added to TODO list");
+    /* Remove existing fole */
+    remove(LOGIN_FILE);
+
+    /* User input info */
+    msl_cli_init(msl);
+
+    /* Open file pointer */
+    FILE *fp = fopen(LOGIN_FILE, "a");
+    if (fp == NULL) return 0;
+
+    /* Write key in file */
+    fprintf(fp, "%s:%s:user", msl->user, msl->pwd);
+
+    /* Close file and return */
+    fclose(fp);
     return 1;
 }
 
