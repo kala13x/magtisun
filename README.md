@@ -7,11 +7,11 @@ MagtiSun is commandline application which makes you able to send sms with termin
 ```
 magtisun [-u <username>] [-l] [-o] [-i] [-h]
 options are:
-   -u <username>       # magtifun user name
-   -l                  # do login
-   -o                  # logout from app
-   -i                  # get and print user information
-   -h                  # prints version and usage
+ -u <username>       # magtifun user name
+ -l                  # do login
+ -o                  # logout from app
+ -i                  # get and print user information
+ -h                  # prints version and usage
 ```
 Software has invisible password input for security reasons.
 
