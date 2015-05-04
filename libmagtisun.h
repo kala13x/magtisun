@@ -76,6 +76,12 @@ int msl_login(MagtiSunLib* msl);
 
 
 /*---------------------------------------------
+| Remove templorary file for login session
+---------------------------------------------*/
+void msl_logout();
+
+
+/*---------------------------------------------
 | Authorise and send sms
 ---------------------------------------------*/
 int msl_send(MagtiSunLib* msl);

@@ -145,6 +145,16 @@ int msl_get_info(MagtiSunLib* msl)
 
 
 /*---------------------------------------------
+| Remove templorary file for login session
+---------------------------------------------*/
+void msl_logout() 
+{
+    remove(LOGIN_FILE);
+    exit(1);
+}
+
+
+/*---------------------------------------------
 | Create templorary file for login session
 ---------------------------------------------*/
 int msl_login(MagtiSunLib* msl) 

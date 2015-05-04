@@ -59,9 +59,8 @@ static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
             msl->login = 1;
             break;
         case 'o':
-            slog(0, "[LIVE] Logged out");
-            remove(LOGIN_FILE);
-            exit(1);
+            slog(0, "[LIVE] Logging out");
+            msl_logout();
             break;
         case 'i':
             msl->info = 1;
