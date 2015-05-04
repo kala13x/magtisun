@@ -28,6 +28,7 @@
 #define DISCARD_FILE "/dev/null"
 #define SAVE_FILE "response"
 
+
 /*---------------------------------------------
 | Structure of user variables
 ---------------------------------------------*/

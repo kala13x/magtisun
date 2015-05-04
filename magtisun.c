@@ -27,10 +27,15 @@
 
 
 /*---------------------------------------------
-| Cleanup on exit
+| Handle signals and clean (security reasons)
 ---------------------------------------------*/
 void cleanup(int sig)
 {
+    /* Handle signals */
+    if (sig == SIGILL || sig == SIGSEGV) 
+        slog(0, "[ERROR] Incorrect inputed data\n");
+
+    /* Make clean */
     slog(0, "[LIVE] Cleanup on exit\n");
     remove(COOCKIE_LOGIN);
     remove(COOCKIE_SEND);
@@ -82,8 +87,10 @@ int main(int argc, char **argv)
     init_slog("magtisun", 3);
     init_msl(&msl);
 
-    /* Catch exit signal */
+    /* Catch ilegal signal */
     signal(SIGINT, cleanup);
+    signal(SIGSEGV, cleanup);
+    signal(SIGILL , cleanup);
 
     /* Parse Commandline Arguments */
     if (parse_arguments(argc, argv, &msl) < 0) 
@@ -101,7 +108,7 @@ int main(int argc, char **argv)
     }
 
     /* Check info */
-    if (msl.info) get_info(&msl);
+    //if (msl.info) get_info(&msl);
 
     /* Read sms info from user input */
     cli_init_sms(&msl);

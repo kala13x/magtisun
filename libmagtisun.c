@@ -189,7 +189,7 @@ int login_and_send(MagtiSun_Login* msl)
         fclose(fp);
 
         /* Check response */
-        if(check_status(SAVE_FILE) >= 0) ret = 1;
+        ret = check_status(SAVE_FILE);
 
         /* Exit from while */
         done = 1;
