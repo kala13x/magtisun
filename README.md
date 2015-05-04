@@ -13,7 +13,6 @@ options are:
    -i                  # get and print user information
    -h                  # prints version and usage
 ```
-If you dont want to make visible your password while typing, just dont write it as argument.
 Software has invisible password input for security reasons.
 
 ###Compilation
@@ -34,18 +33,17 @@ Make sure you have [curl development library](https://github.com/bagder/curl) in
 ###Simple CLI interface
 Here is an example output of MagtiSun usage:
 ```
-[kala@build-box magtisun]$ ./magtisun
+[kala@build-box magtisun]$ ./magtisun 
 ====================================================
-MagtiSun-SMS: 0.0.2 Beta Build 4 (May  4 2015)
+MagtiSun-SMS: 0.0.4 Beta Build 13 (May  5 2015)
 ====================================================
-2015.05.04-00:56:47 - [WARN] Username and/or Password is not given
-2015.05.04-00:56:47 - [INFO] Check usage with parameter -h
-2015.05.04-00:56:47 - [INPUT] Enter Username: kala13x
-2015.05.04-00:57:04 - [INPUT] Enter Password: ********
-2015.05.04-00:57:07 - [INPUT] Enter Number: 598998592
-2015.05.04-00:57:12 - [INPUT] Enter Text: dzudzu
-2015.05.04-00:57:16 - [LIVE] Sending message...
-2015.05.04-00:57:17 - [LIVE] Message sent
+2015.05.05-00:50:38 - [LIVE] Not logged in
+2015.05.05-00:50:38 - [INPUT] Enter Username: kala13x
+2015.05.05-00:50:48 - [INPUT] Enter Password: 
+2015.05.05-00:50:51 - [INPUT] Enter Number: 598998592
+2015.05.05-00:50:56 - [INPUT] Enter Text: dzudzu
+2015.05.05-00:50:59 - [LIVE] Sending message...
+2015.05.05-00:51:11 - [LIVE] Message sent
 ```
 
 ###Get more info from blog
