@@ -28,7 +28,7 @@
 /*---------------------------------------------
 | Initialise magtisun login variables
 ---------------------------------------------*/
-void init_msl(MagtiSun_Login* msl)
+void msl_init(MagtiSunLib* msl)
 {
     bzero(msl->user, sizeof(msl->user));
     bzero(msl->num, sizeof(msl->num));
@@ -42,7 +42,7 @@ void init_msl(MagtiSun_Login* msl)
 /*---------------------------------------------
 | Read login information
 ---------------------------------------------*/
-void cli_init_msl(MagtiSun_Login* msl) 
+void msl_cli_init(MagtiSunLib* msl) 
 {
     printf(ret_slog("[INPUT] Enter Username: "));
     scanf("%s", msl->user);
@@ -53,7 +53,7 @@ void cli_init_msl(MagtiSun_Login* msl)
 /*---------------------------------------------
 | Read sms information
 ---------------------------------------------*/
-void cli_init_sms(MagtiSun_Login* msl) 
+void msl_init_sms(MagtiSunLib* msl)
 {
     printf(ret_slog("[INPUT] Enter Number: "));
     scanf("%s", msl->num);
@@ -75,7 +75,7 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 /*---------------------------------------------
 | Check status in response
 ---------------------------------------------*/
-int check_status(char *fname) 
+int msl_check_status(char *fname) 
 {
     /* Used variables */
     FILE* fp;
@@ -91,6 +91,7 @@ int check_status(char *fname)
         /* Get status */
         while ((read = getline(&line, &len, fp)) != -1) 
         {
+            /* Find success str in response */
             if(strstr(line, "success") != NULL) 
             {
                 ret = 1;
@@ -107,7 +108,7 @@ int check_status(char *fname)
 /*---------------------------------------------
 | Get information about user
 ---------------------------------------------*/
-int get_info(MagtiSun_Login* msl) 
+int msl_get_info(MagtiSunLib* msl) 
 {
     slog(0, "[TODO] Get infotmation is added to TODO list");
     exit(0);
@@ -117,7 +118,7 @@ int get_info(MagtiSun_Login* msl)
 /*---------------------------------------------
 | Create templorary file for login session
 ---------------------------------------------*/
-int login_msl(MagtiSun_Login* msl) 
+int msl_login(MagtiSunLib* msl) 
 {
     slog(0, "[TODO] User login is added to TODO list");
     return 1;
@@ -126,12 +127,12 @@ int login_msl(MagtiSun_Login* msl)
 /*---------------------------------------------
 | Authorise and send sms
 ---------------------------------------------*/
-int login_and_send(MagtiSun_Login* msl) 
+int msl_send(MagtiSunLib* msl) 
 {
     /* Used variables */
+    FILE *fp;
     CURL *curl;
     CURLcode res;
-    FILE *fp;
     char login_url[128];
     char login_val[64];
     char sms_url[128];
@@ -180,7 +181,7 @@ int login_and_send(MagtiSun_Login* msl)
         fp = fopen(SAVE_FILE, "w");
         if (fp == NULL) break;
 
-        /* Get ready send */
+        /* Get ready for send */
         curl_easy_setopt(curl, CURLOPT_URL, &sms_url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &sms_val);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(sms_val));
@@ -192,13 +193,11 @@ int login_and_send(MagtiSun_Login* msl)
 
         /* Send post request to magtifun */
         res = curl_easy_perform(curl);
+        fclose(fp);
 
         /* Check everything is ok */
         if(res != CURLE_OK) break;
-        fclose(fp);
-
-        /* Check response */
-        ret = check_status(SAVE_FILE);
+        ret = msl_check_status(SAVE_FILE);
 
         /* Exit from while */
         done = 1;

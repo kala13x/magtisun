@@ -41,40 +41,40 @@ typedef struct {
     char user[16];
     short info;
     short login;
-} MagtiSun_Login;
+} MagtiSunLib;
 
 
 /*---------------------------------------------
 | Initialise magtisun login variables
 ---------------------------------------------*/
-void init_msl(MagtiSun_Login* msl);
+void msl_init(MagtiSunLib* msl);
 
 
 /*---------------------------------------------
 | Read login information
 ---------------------------------------------*/
-void cli_init_msl(MagtiSun_Login* msl);
+void msl_cli_init(MagtiSunLib* msl);
 
 
 /*---------------------------------------------
 | Read sms information
 ---------------------------------------------*/
-void cli_init_sms(MagtiSun_Login* msl);
+void msl_init_sms(MagtiSunLib* msl);
 
 
 /*---------------------------------------------
 | Get information about user
 ---------------------------------------------*/
-int get_info(MagtiSun_Login* msl);
+int msl_get_info(MagtiSunLib* msl);
 
 
 /*---------------------------------------------
 | Create templorary file for login session
 ---------------------------------------------*/
-int login_msl(MagtiSun_Login* msl);
+int msl_login(MagtiSunLib* msl);
 
 
 /*---------------------------------------------
 | Authorise and send sms
 ---------------------------------------------*/
-int login_and_send(MagtiSun_Login* msl);
+int msl_send(MagtiSunLib* msl);

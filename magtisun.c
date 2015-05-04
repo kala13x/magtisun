@@ -47,7 +47,7 @@ void cleanup(int sig)
 /*---------------------------------------------
 | Parse cli arguments
 ---------------------------------------------*/
-static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
+static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
 {
     int c;
     while ( (c = getopt(argc, argv, "u:l1:o1:i1:h1")) != -1) {
@@ -80,7 +80,7 @@ static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
 int main(int argc, char **argv)
 {
     /* Used variables */
-    MagtiSun_Login msl;
+    MagtiSunLib msl;
     int ret = 0;
 
     /* Greet users */
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
     /* Initialise variables */
     init_slog("magtisun", 3);
-    init_msl(&msl);
+    msl_init(&msl);
 
     /* Catch ilegal signal */
     signal(SIGINT, cleanup);
@@ -109,20 +109,20 @@ int main(int argc, char **argv)
     }
 
     /* User imput */
-    cli_init_msl(&msl);
+    msl_cli_init(&msl);
 
     /* Log in user */
-    if (msl.login) login_msl(&msl);
+    if (msl.login) msl_login(&msl);
 
     /* Check info */
-    if (msl.info) get_info(&msl);
+    if (msl.info) msl_get_info(&msl);
 
     /* Read sms info from user input */
-    cli_init_sms(&msl);
+    msl_init_sms(&msl);
 
     /* Send sms */
     slog(0, "[LIVE] Sending message...");
-    ret = login_and_send(&msl);
+    ret = msl_send(&msl);
     if (ret>=0) slog(0, "[LIVE] Message sent");
     else slog(0, "[ERROR] Can not send sms");
 

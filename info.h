@@ -9,7 +9,7 @@ Desc: Get and print additional information
 
 /* Version and build number */
 #define VERSION "0.0.3 Beta"
-#define BUILD 9
+#define BUILD 11
 
 
 /*---------------------------------------------
