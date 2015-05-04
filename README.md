@@ -18,6 +18,8 @@ Software has invisible password input for security reasons.
 ###Compilation
 Compilation of this project is possible with Makefile (just type 'make' in terminal).
 ```
+git clone git@github.com:kala13x/magtisun.git
+cd  magtisun
 make
 sudo make install
 ```
