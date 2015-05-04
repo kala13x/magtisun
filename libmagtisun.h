@@ -26,6 +26,7 @@
 #define COOCKIE_SEND "cookie-name-send"
 #define COOCKIE_FILE "cookie"
 #define DISCARD_FILE "/dev/null"
+#define LOGIN_FILE "/tmp/msl"
 #define SAVE_FILE "response"
 
 
@@ -39,6 +40,7 @@ typedef struct {
     char num[16];
     char user[16];
     short info;
+    short login;
 } MagtiSun_Login;
 
 
@@ -64,6 +66,12 @@ void cli_init_sms(MagtiSun_Login* msl);
 | Get information about user
 ---------------------------------------------*/
 int get_info(MagtiSun_Login* msl);
+
+
+/*---------------------------------------------
+| Create templorary file for login session
+---------------------------------------------*/
+int login_msl(MagtiSun_Login* msl);
 
 
 /*---------------------------------------------

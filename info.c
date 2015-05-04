@@ -38,10 +38,11 @@ void greet(void)
 void usage(void) 
 {
     greet();
-    printf("Usage: magtisun [-u <username>] [-p <password>] [-h]\n");
+    printf("Usage: magtisun [-u <username>] [-l] [-o] [-i] [-h]\n");
     printf("options are:\n");
     printf("   -u <username>       # magtifun user name\n");
-    printf("   -p <password>       # magtifun password\n");
+    printf("   -l                  # do login\n");
+    printf("   -o                  # logout from app\n");
     printf("   -i                  # get and print user information\n");
     printf("   -h                  # prints version and usage\n");
     printf("\n");

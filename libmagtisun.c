@@ -34,6 +34,7 @@ void init_msl(MagtiSun_Login* msl)
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
     msl->pwd = NULL;
+    msl->login = 0;
     msl->info = 0;
 }
 
@@ -43,9 +44,8 @@ void init_msl(MagtiSun_Login* msl)
 ---------------------------------------------*/
 void cli_init_msl(MagtiSun_Login* msl) 
 {
-    slog(0, "[INPUT] Enter Username: ");
+    printf(ret_slog("[INPUT] Enter Username: "));
     scanf("%s", msl->user);
-    ret_slog("[INPUT] Enter Password: ");
     msl->pwd = getpass(ret_slog("[INPUT] Enter Password: "));
 }
 
@@ -55,9 +55,9 @@ void cli_init_msl(MagtiSun_Login* msl)
 ---------------------------------------------*/
 void cli_init_sms(MagtiSun_Login* msl) 
 {
-    slog(0, "[INPUT] Enter Number: ");
+    printf(ret_slog("[INPUT] Enter Number: "));
     scanf("%s", msl->num);
-    slog(0, "[INPUT] Enter Text: ");
+    printf(ret_slog("[INPUT] Enter Text: "));
     scanf("%s", msl->txt);
 }
 
@@ -109,10 +109,19 @@ int check_status(char *fname)
 ---------------------------------------------*/
 int get_info(MagtiSun_Login* msl) 
 {
-    slog(0, "Get infotmation is added to TODO list\n");
+    slog(0, "[TODO] Get infotmation is added to TODO list");
     exit(0);
 }
 
+
+/*---------------------------------------------
+| Create templorary file for login session
+---------------------------------------------*/
+int login_msl(MagtiSun_Login* msl) 
+{
+    slog(0, "[TODO] User login is added to TODO list");
+    return 1;
+}
 
 /*---------------------------------------------
 | Authorise and send sms

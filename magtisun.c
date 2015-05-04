@@ -33,10 +33,10 @@ void cleanup(int sig)
 {
     /* Handle signals */
     if (sig == SIGILL || sig == SIGSEGV) 
-        slog(0, "[ERROR] Incorrect inputed data\n");
+        slog(0, "[ERROR] Incorrect inputed data");
 
     /* Make clean */
-    slog(0, "[LIVE] Cleanup on exit\n");
+    slog(0, "[LIVE] Cleanup on exit");
     remove(COOCKIE_LOGIN);
     remove(COOCKIE_SEND);
     remove(SAVE_FILE);
@@ -50,13 +50,16 @@ void cleanup(int sig)
 static int parse_arguments(int argc, char *argv[], MagtiSun_Login* msl)
 {
     int c;
-    while ( (c = getopt(argc, argv, "u:p:i1:h1")) != -1) {
+    while ( (c = getopt(argc, argv, "u:l1:o1:i1:h1")) != -1) {
         switch (c) {
         case 'u':
             strcpy(msl->user, optarg);
             break;
-        case 'p':
-            msl->pwd = strdup(optarg);
+        case 'l':
+            msl->login = 1;
+            break;
+        case 'o':
+            remove(LOGIN_FILE);
             break;
         case 'i':
             msl->info = 1;
@@ -99,26 +102,29 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    /* Check valid user and password */
-    if (strlen(msl.user) < 4 || !msl.pwd) 
+    /* Check valid user */
+    if (strlen(msl.user) < 4) 
     {
-        slog(0, "[WARN] Username and/or Password is not given\n");
-        slog(0, "[INFO] Check usage with parameter -h\n");
-        cli_init_msl(&msl);
+        slog(0, "[INFO] Check usage with parameter -h");
     }
 
+    /* User imput */
+    cli_init_msl(&msl);
+
+    /* Log in user */
+    if (msl.login) login_msl(&msl);
+
     /* Check info */
-    //if (msl.info) get_info(&msl);
+    if (msl.info) get_info(&msl);
 
     /* Read sms info from user input */
     cli_init_sms(&msl);
 
     /* Send sms */
-    slog(0, "[LIVE] Sending message...\n");
-
+    slog(0, "[LIVE] Sending message...");
     ret = login_and_send(&msl);
-    if (ret>=0) slog(0, "[LIVE] Message sent\n");
-    else slog(0, "[ERROR] Can not send sms\n");
+    if (ret>=0) slog(0, "[LIVE] Message sent");
+    else slog(0, "[ERROR] Can not send sms");
 
     return 0;
 }
