@@ -92,6 +92,7 @@ int main(int argc, char **argv)
 {
     /* Used variables */
     MagtiSunLib msl;
+    char answer[8];
     int ret = 0;
 
     /* Greet users */
@@ -108,23 +109,35 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    /* Log in user */
+    /* Check logged user */
+    if (msl.logged) 
+        slog(0, "[LIVE] Logged in as: %s", msl.usr);
+
+    /* Login user */
     if (msl.login)
     {
-        if(msl_login(&msl)) 
-            slog(0, "[LIVE] Logged in");
+        if (!msl.logged) 
+        {
+            /* User input info */
+            init_info(&msl);
+
+            /* Do login */
+            if(msl_login(&msl)) 
+                slog(0, "[LIVE] Logged in as: %s", msl.usr);
+        }
+        else 
+        {
+            slog(0, "[LIVE] Please log out first");
+            exit(0);
+        }
     }
 
-    /* Check valid user */
-    if (strlen(msl.usr) < 4 && strlen(msl.pwd) < 4) 
+    /* Check valid username and password */
+    if (strlen(msl.usr) < 4 || strlen(msl.pwd) < 4) 
     {
         slog(0, "[LIVE] Not logged in");
         init_info(&msl);
     }
-
-    /* Check logged in user */
-    if (msl.logged) 
-        slog(0, "[LIVE] Logged in as: %s", msl.usr);
 
     /* Check info */
     if (msl.info) msl_get_info(&msl);
@@ -134,8 +147,27 @@ int main(int argc, char **argv)
 
     /* Send sms */
     slog(0, "[LIVE] Sending message...");
+
     ret = msl_send(&msl);
-    if (ret>=0) slog(0, "[LIVE] Message sent");
+    if (ret>=0) 
+    {
+        slog(0, "[LIVE] Message sent");
+
+        /* Stay logged */
+        if (!msl.logged) 
+        {
+            /* User input answer */
+            printf(ret_slog("[LIVE] Do you want to stay logged? (y/n): "));
+            scanf("%s", answer);
+
+            /* Check answer answer */
+            if (strstr(answer, "y") != NULL || strstr(answer, "Y") != NULL) 
+            {
+                if(msl_login(&msl))
+                    slog(0, "[LIVE] Saved logged session");
+            }
+        }
+    }
     else 
     {
         slog(0, "[ERROR] Can not send sms");

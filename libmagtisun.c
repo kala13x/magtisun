@@ -142,18 +142,21 @@ void msl_init(MagtiSunLib* msl)
         /* Get status */
         while ((read = getline(&line, &len, fp)) != -1) 
         {
-            /* Find user in file */
+            /* Decrypt line */
+            line = msl_decrypt(line);
+
+            /* Find user in line */
             if(strstr(line, "user") != NULL) 
             {
-                /* Decrypt line */
-                line = msl_decrypt(line);
-
                 /* Get user info */
                 tmp = strtok(line, ":");
-                strcpy(msl->usr, tmp);
+                if (tmp) strcpy(msl->usr, tmp);
                 tmp = strtok(NULL, ":");
-                strcpy(msl->pwd, tmp);
-                msl->logged = 1;
+                if (tmp) strcpy(msl->pwd, tmp);
+
+                /* Check valid usr/pwd */
+                if (strlen(msl->usr) > 4 && strlen(msl->pwd) > 4) 
+                    msl->logged = 1;
             }
         }
         fclose(fp);
@@ -266,20 +269,18 @@ int msl_login(MagtiSunLib* msl)
     /* Remove existing fole */
     remove(LOGIN_FILE);
 
-    /* User input info */
-    msl_cli_init(msl);
-
     /* Open file pointer */
     FILE *fp = fopen(LOGIN_FILE, "a");
     if (fp != NULL) 
     {
         /* Crypt session key */
-        sprintf(session, "%s:%s", msl->usr, msl->pwd);
+        sprintf(session, "%s:%s:user", msl->usr, msl->pwd);
         crypted = msl_crypt(session);
 
         /* Write key in file */
-        fprintf(fp, "%s:user", crypted);
-
+        fprintf(fp, "%s", crypted);
+        msl->logged = 1;
+        
         /* Close file and return */
         fclose(fp);
         return 1;
