@@ -19,7 +19,6 @@ Desc:   Standart includes for magtisun project
 #include <stdarg.h>
 #include <unistd.h>
 #include <limits.h>
-#include <signal.h>
 #include <stdint.h>
 #include <assert.h>
 #include <ctype.h>

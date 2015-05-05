@@ -24,7 +24,10 @@ extern "C" {
 #endif
 
 
-#include "stdinc.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 
 /* Definations for version info */
 #define SLOGVERSION "0.2.3 Snapshot"
@@ -66,10 +69,12 @@ const char* slog_version();
 ---------------------------------------------*/
 void init_slog(char* fname, int max);
 
+
 /*---------------------------------------------
 | Return string in slog format
 ---------------------------------------------*/
 char* ret_slog(char *msg, ...);
+
 
 /*---------------------------------------------
 | Log exiting process

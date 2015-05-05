@@ -54,10 +54,9 @@ void msl_cleanup(int sig)
 {
     /* Handle signals */
     if (sig == SIGILL || sig == SIGSEGV) 
-        printf("[ERROR] Incorrect inputed data\n");
+        printf("MagtiSun: Incorrect inputed data\n");
 
     /* Make clean */
-    printf("[LIVE] Cleanup on exit\n");
     remove(RESPONSE_FILE);
     remove(COOCKIE_LOGIN);
     remove(COOCKIE_SEND);
@@ -170,11 +169,11 @@ void msl_init(MagtiSunLib* msl)
 void msl_cli_init(MagtiSunLib* msl) 
 {
     /* Get username */
-    printf("[INPUT] Enter Username: ");
+    printf("MagtiSun: Enter Username: ");
     scanf("%s", msl->usr);
 
     /* Get password (invisible) */
-    char* pwd = getpass("[INPUT] Enter Password: ");
+    char* pwd = getpass("MagtiSun: Enter Password: ");
     strcpy(msl->pwd, pwd);
 }
 
@@ -185,11 +184,11 @@ void msl_cli_init(MagtiSunLib* msl)
 void msl_init_sms(MagtiSunLib* msl)
 {
     /* Get number */
-    printf("[INPUT] Enter Number: ");
+    printf("MagtiSun: Enter Number: ");
     scanf("%s", msl->num);
 
     /* Get sms text */
-    printf("[INPUT] Enter Text: ");
+    printf("MagtiSun: Enter Text: ");
     scanf("%s", msl->txt);
 }
 
@@ -242,7 +241,7 @@ int msl_check_status(char *fname)
 ---------------------------------------------*/
 int msl_get_info(MagtiSunLib* msl) 
 {
-    printf("[TODO] Get infotmation is added to TODO list\n");
+    printf("MagtiSun: Get infotmation is added to TODO list\n");
     exit(0);
 }
 

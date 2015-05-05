@@ -18,7 +18,11 @@
 ---------------------------------------------------------------------------*/
 
 
-#include "stdinc.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <time.h>
 #include "slog.h"
 
 /* Max buffer size of message */
@@ -150,6 +154,7 @@ char* ret_slog(char *msg, ...)
     /* Allocate output */
     mout = strdup(output);
 
+    /* Return output */
     return mout;
 }
 
@@ -195,6 +200,7 @@ void slog(int level, char *msg, ...)
 ---------------------------------------------*/
 void init_slog(char* fname, int max) 
 {
+    /* Initialise variables */
     slog_val.level = 0;
     slog_val.fname = strdup(fname);
     slog_val.l_max = max;
