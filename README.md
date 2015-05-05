@@ -1,7 +1,7 @@
 MagtiSun - Version: 0.0.6 Beta BUILD 16
 ----
 
-MagtiSun is commandline application which makes you able to send sms with terminal via magtifun sms API. Also you can implement libmagtisun in another C/C++ CLI application prjects to send sms from your application without graphical interface. Software is written for educational purposes and is distributed in the hope that it will be useful for anyone interested in this field.
+ MagtiSun is commandline application which makes you able to send sms with terminal via magtifun. Also you can implement libmagtisun in another C/C++ application prjects to send sms from your application with or without graphical interface. Software is written for educational purposes and is distributed in the hope that it will be useful for anyone interested in this field.
 
 ###Usage
 ```
@@ -15,15 +15,15 @@ options are:
 Software has invisible password input for security reasons.
 
 ###Login
-If you dont want to type your username and password everytime when you launch magtisun, you can just login in application and magtisun will crypt and save your user information in templorary file in your /tmp/ directory. Because of known security reasons, that password must not be seen to others, magtisun crypts key before it saves it to file. If you do cat of that file, you will not be able to see password. File will be something like that:
+If you dont want to type your username and password everytime when you launch magtisun, you can just login in application with parameter -l and magtisun will crypt and save your user information in templorary file at your /tmp/ directory. Because of known security reason, that password must not be visible for others, magtisun crypts key before it saves it to file. If you do cat of that file, you will not be able to see password. String in file will be something like that:
 ```
 ����������������
 ```
-Wen you launch application afther login, magtisun will decrypt this file to get user and password for authorisation on magtiofun. If you done everything and you dont need logined session, you can just logout from application with command:
+When you launch application after login, magtisun will decrypt this file to get user and password for authorisation at magtiofun. If you done everything and you dont need logged in session, you can just logout from application with command:
 ```
 magtisun -o
 ```
-This command will remove templorary file where is saved your encrypted key.
+This command will remove templorary file where your encrypted key is saved.
 
 
 ###Compilation
@@ -44,7 +44,7 @@ If you want to implement this library in another C/C++ project, you need only tw
 libmagtisun.c
 libmagtisun.h
 ```
-Just include header file in your application and you will be able to use those functions which are defined in header file. Also please make sure that you are compiling and linking libmagtisun.c while compiling your project.
+Just put this files in your project directory and include header file in your application and you will be able to use those functions which are defined in header file. Also please make sure that you are compiling and linking libmagtisun.c while compiling your project.
 
 You can see examples in Makefile and magtisun.c files to see how to compile correctly and use functions from libmagtisun. 
 

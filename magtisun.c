@@ -1,8 +1,9 @@
 /*---------------------------------------------------------------------------
 
- MagtiSun is commandline application which makes you able to send sms
- with terminal via magtifun sms api. You also can implement libmagtisun 
- in another cli applications to send sms with terminal.
+ MagtiSun is commandline application which makes you able to send sms 
+ with terminal via magtifun. Also you can implement libmagtisun in 
+ another C/C++ application prjects to send sms from your application 
+ with or without graphical interface.
 
  Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost)
  Web: http://off-sec.com/ ; E-Mail: kala0x13@gmail.com
