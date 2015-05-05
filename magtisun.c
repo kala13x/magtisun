@@ -105,7 +105,12 @@ int main(int argc, char **argv)
     slog(0, "[LIVE] Sending message...");
     ret = msl_send(&msl);
     if (ret>=0) slog(0, "[LIVE] Message sent");
-    else slog(0, "[ERROR] Can not send sms");
+    else 
+    {
+        slog(0, "[ERROR] Can not send sms");
+        slog(0, "[INFO] The reason can be wrong username and/or password");
+        slog(0, "[INFO] Also make sure you can ping magtifun.ge");
+    }
 
     return 0;
 }

@@ -9,7 +9,7 @@ all: $(OBJS)
 	$(CC) $(CFLAGS) -o magtisun $(OBJS) $(LIB)
 
 magtisun.$(OBJ): libmagtisun.h info.h slog.h stdinc.h
-libmagtisun.$(OBJ): libmagtisun.h slog.h stdinc.h
+libmagtisun.$(OBJ): libmagtisun.h
 info.$(OBJ): info.h stdinc.h
 slog.$(OBJ): slog.h stdinc.h
 
