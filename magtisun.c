@@ -138,7 +138,23 @@ int main(int argc, char **argv)
     }
 
     /* Check info */
-    if (msl.info) msl_get_info(&msl);
+    if (msl.info) 
+    {
+        /* Get info */
+        if(msl_get_info(&msl) >= 0) 
+        {
+            slog(0, "Username: %s", msl.name);
+            slog(0, "Messages left: %d", msl.mleft);
+            exit(0);
+        }
+        else 
+        {
+            slog(0, "[ERROR] Can not get info");
+            slog(0, "[INFO] The reason can be wrong username and/or password");
+            slog(0, "[INFO] Also make sure you can ping magtifun.ge");
+            exit(0);
+        }
+    }
 
     /* Read sms info from user input */
     user_init_sms(&msl);

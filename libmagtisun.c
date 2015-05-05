@@ -128,12 +128,14 @@ void msl_init(MagtiSunLib* msl)
     bzero(msl->pwd, sizeof(msl->pwd));
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
+    bzero(msl->name, sizeof(msl->name));
+
 
     /* Set flags */
     msl->login = 0;
     msl->info = 0;
     msl->logged = 0;
-
+    msl->mleft=-1;
     /* Open session file */
     fp = fopen(LOGIN_FILE, "r");
     if (fp != NULL) 
@@ -241,8 +243,82 @@ int msl_check_status(char *fname)
 ---------------------------------------------*/
 int msl_get_info(MagtiSunLib* msl) 
 {
-    printf("MagtiSun: Get infotmation is added to TODO list\n");
-    exit(0);
+    /* Used variables */
+    FILE *fp;
+    CURL *curl;
+    CURLcode res;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    char val[512];
+    char url[128];
+    int ret = -1;
+
+    /* Initialise curl */
+    curl_global_init(CURL_GLOBAL_ALL);
+    curl = curl_easy_init();
+
+    /* Check curl */
+    if (curl) 
+    {
+        /* Open output fileponter */
+        fp = fopen(RESPONSE_FILE, "w+r");
+        if (fp != NULL) 
+        {
+            /* Get ready for login */
+            strcpy(url, "http://www.magtifun.ge/index.php?page=11&lang=ge");
+            sprintf(val, "user=%s&password=%s", msl->usr, msl->pwd);
+
+            /* Set curl options for login */
+            curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_easy_setopt(curl, CURLOPT_URL, &url);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &val);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(val));
+            curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+            curl_easy_setopt(curl, CURLOPT_POST, 1);
+            curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
+            curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_LOGIN);
+            curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+
+            /* Send post request to magtifun */
+            res = curl_easy_perform(curl);
+
+            /* Open response fileponter */
+            if (res == CURLE_OK)
+            {
+                while ((read = getline(&line, &len, fp)) != -1) 
+                {
+                    /* Find left messages in response */
+                    if(strstr(line,"xxlarge dark english")!=NULL)
+                        msl->mleft = atoi(line+100);
+
+                    /* Find name in response */
+                    if(strstr(line,"center_text dark english")!=NULL)
+                    {
+                        char* name = strdup(line+82);
+                        sscanf(name, "%32[^<]<", msl->name);
+                    }
+                }
+            } 
+            
+            /* Cleanup */
+            fclose(fp);
+            curl_easy_cleanup(curl);
+            remove(RESPONSE_FILE);
+            remove(COOCKIE_LOGIN);
+        }
+    }
+
+    /* Global cleanup curl */
+    curl_global_cleanup();
+
+    /* Check valid data */
+    if(strlen(msl->name)>4 && msl->mleft>=0)
+        ret = 1;
+
+    return ret;
 }
 
 

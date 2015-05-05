@@ -36,8 +36,8 @@ extern "C" {
 #define LOGIN_FILE "/tmp/msl"
 
 /* Version and build number */
-#define MSLVERSION "0.0.9 Snapshot"
-#define MSLBUILD 19
+#define MSLVERSION "0.1.0 Snapshot"
+#define MSLBUILD 20
 
 
 /*---------------------------------------------
@@ -45,10 +45,12 @@ extern "C" {
 ---------------------------------------------*/
 typedef struct {
     /* User input */
+    char name[132];
     char txt[512];
     char pwd[32];
     char num[16];
     char usr[16];
+    int mleft;
     /* Flags */
     short info;
     short login;

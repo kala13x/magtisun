@@ -1,4 +1,4 @@
-MagtiSun - Version: 0.0.7 Beta BUILD 18
+MagtiSun - Version: 0.1.0 Nightly BUILD 20
 ----
 
  MagtiSun is commandline application which makes you able to send sms with terminal via magtifun. Also you can implement libmagtisun in another C/C++ application prjects to send sms from your application with or without graphical interface. Software is written for educational purposes and is distributed in the hope that it will be useful for anyone interested in this field.
@@ -50,8 +50,6 @@ You can see examples in Makefile and magtisun.c files to see how to compile corr
 
 Full API documentation will be available soon.
 
-###Todo
-- get and print user information
 
 ###Simple CLI interface
 Here is an example output of MagtiSun usage:
