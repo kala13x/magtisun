@@ -5,7 +5,7 @@
  another C/C++ application prjects to send sms from your application 
  with or without graphical interface.
 
- Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost)
+ Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost) & Niko Peikrishvili
  Web: http://off-sec.com/ ; E-Mail: kala0x13@gmail.com
 
  This is free software; you can redistribute it and/or
@@ -36,8 +36,8 @@ extern "C" {
 #define LOGIN_FILE "/tmp/msl"
 
 /* Version and build number */
-#define MSLVERSION "0.1.0 Snapshot"
-#define MSLBUILD 20
+#define MSLVERSION "0.1.1 Snapshot"
+#define MSLBUILD 21
 
 
 /*---------------------------------------------

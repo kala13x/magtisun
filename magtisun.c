@@ -5,7 +5,7 @@
  another C/C++ application prjects to send sms from your application 
  with or without graphical interface.
 
- Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost)
+ Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost) & Niko Peikrishvili
  Web: http://off-sec.com/ ; E-Mail: kala0x13@gmail.com
 
  This is free software; you can redistribute it and/or
@@ -143,8 +143,8 @@ int main(int argc, char **argv)
         /* Get info */
         if(msl_get_info(&msl) >= 0) 
         {
-            slog(0, "Username: %s", msl.name);
-            slog(0, "Messages left: %d", msl.mleft);
+            slog(0, "[LIVE] User: %s", msl.name);
+            slog(0, "[LIVE] Messages left: %d", msl.mleft);
             exit(0);
         }
         else 

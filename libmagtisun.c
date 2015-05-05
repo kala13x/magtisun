@@ -5,7 +5,7 @@
  another C/C++ application prjects to send sms from your application 
  with or without graphical interface.
 
- Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost)
+ Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost) & Niko Peikrishvili
  Web: http://off-sec.com/ ; E-Mail: kala0x13@gmail.com
 
  This is free software; you can redistribute it and/or
@@ -239,6 +239,50 @@ int msl_check_status(char *fname)
 
 
 /*---------------------------------------------
+| Check get info response
+---------------------------------------------*/
+int msl_check_info(char* fname, MagtiSunLib* msl) 
+{
+    /* Used variables */
+    FILE* fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    char* name;
+    int ret = -1;
+
+    /* Open templorary file */
+    fp = fopen(fname, "r");
+    if (fp != NULL) 
+    {    
+        while ((read = getline(&line, &len, fp)) != -1) 
+        {
+            /* Find left messages in response */
+            if(strstr(line,"xxlarge dark english")!=NULL)
+            msl->mleft = atoi(line+100);
+
+            /* Find name in response */
+            if(strstr(line,"center_text dark english")!=NULL)
+            {
+                name = strdup(line+82);
+                sscanf(name, "%32[^<]<", msl->name);
+            }
+        }
+    }
+
+    /* Cleanup */
+    fclose(fp);
+    remove(RESPONSE_FILE);
+
+    /* Check valid data */
+    if(strlen(msl->name) > 4 && msl->mleft >= 0)
+        ret = 1;
+
+    return ret;
+}
+
+
+/*---------------------------------------------
 | Get information about user
 ---------------------------------------------*/
 int msl_get_info(MagtiSunLib* msl) 
@@ -247,9 +291,6 @@ int msl_get_info(MagtiSunLib* msl)
     FILE *fp;
     CURL *curl;
     CURLcode res;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
     char val[512];
     char url[128];
     int ret = -1;
@@ -262,7 +303,7 @@ int msl_get_info(MagtiSunLib* msl)
     if (curl) 
     {
         /* Open output fileponter */
-        fp = fopen(RESPONSE_FILE, "w+r");
+        fp = fopen(RESPONSE_FILE, "w");
         if (fp != NULL) 
         {
             /* Get ready for login */
@@ -284,39 +325,21 @@ int msl_get_info(MagtiSunLib* msl)
 
             /* Send post request to magtifun */
             res = curl_easy_perform(curl);
+            fclose(fp);
 
             /* Open response fileponter */
-            if (res == CURLE_OK)
-            {
-                while ((read = getline(&line, &len, fp)) != -1) 
-                {
-                    /* Find left messages in response */
-                    if(strstr(line,"xxlarge dark english")!=NULL)
-                        msl->mleft = atoi(line+100);
+            if (res == CURLE_OK) 
+                ret = msl_check_info(RESPONSE_FILE, msl);
 
-                    /* Find name in response */
-                    if(strstr(line,"center_text dark english")!=NULL)
-                    {
-                        char* name = strdup(line+82);
-                        sscanf(name, "%32[^<]<", msl->name);
-                    }
-                }
-            } 
-            
             /* Cleanup */
-            fclose(fp);
             curl_easy_cleanup(curl);
-            remove(RESPONSE_FILE);
             remove(COOCKIE_LOGIN);
+            remove(COOCKIE_FILE);
         }
     }
 
     /* Global cleanup curl */
     curl_global_cleanup();
-
-    /* Check valid data */
-    if(strlen(msl->name)>4 && msl->mleft>=0)
-        ret = 1;
 
     return ret;
 }

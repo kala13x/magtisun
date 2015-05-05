@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="author" content="Giorgi Omiadze" />
+<meta name="copyright" content="2011 © Magticom LTD" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="ge" />
+<meta name="keywords" content="მაგთიკომი, მაგთიფანი, სმს" />
+<meta name="description" content="მაგთიფანი, მოკლე ტექსტური შეტყობინებების გაგზავნა" />
+<meta http-equiv="Cache-control" content="Public">
+<meta http-equiv="Expires" content="Tue, 05 May 2015 21:10:43 GMT">
+<link rel="stylesheet" type="text/css" href="style/style.css?v=2" />
+<!--[if IE 6]><link rel="stylesheet" type="text/css" href="style/ie6.css" /><![endif]-->
+<link rel="stylesheet" type="text/css" href="style/ge.css?v=3" />
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png"/>
+<title>MagtiFun | ავტორიზაცია</title>                    
+</head>
+
+<body>
+
+<!-- Global Functions -->
+<script language="javascript" src="js/global.js?v=2"></script>
+
+<!-- JQuery -->
+<script language="javascript" src="js/jquery.js?v=2"></script>
+
+<!-- Nivo Slider -->
+<script type="text/javascript" src="js/slider.js"></script>
+
+<!-- Site Body -->
+<div class="content_div">
+    <center>
+        <div class="main_div">
+            <!-- Content Left Side -->
+            <div class="left_side">
+                <!-- Header -->
+                <div align="right">
+    <!-- Logo -->
+    <a href="index.php" style=" float: left"><img src="images/logo.gif" width="110px" height="40px" /></a>
+
+    </div>
+<div class="clear_line"></div>                
+                <!-- Top Banner -->
+                    <br /><br /><br />
+                
+                <!-- Title -->
+                <h1 class="red">მომხმარებლის ავტორიზაცია</h1>
+                
+                <!-- Content -->
+                <br />			<!-- Success -->
+			<script type="text/javascript" language="javascript">
+				window.location = "index.php?page=2&lang=ge";
+			</script>
+		                
+				<div class="clear_line"></div>
+                
+                <br /><br />
+                
+                <!-- Bottom Banner -->
+                            </div>
+            <!-- Content Right Side -->
+            <div class="right_side">
+                <!-- Log In -->
+                
+<!-- Log In -->
+<div class="login large_round_border shadow">
+
+<!-- Start user Action Form -->
+<form name="user_action" method="post" action="index.php?page=11&lang=ge">
+
+    <!-- Form Header -->
+    <div class="tbl_header gray">
+		მოგესალმებით        <p class="center_text dark english">Nika Peikrishvili</p>
+        <a href="index.php?page=7&lang=ge">
+            <img width="50px" height="50px" class="fb_img" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p50x50/10418972_925945014104665_6441317261021631262_n.jpg?oh=22a55852995f5f13b9ce42c701aa46b8&oe=555E9B93&__gda__=1432256501_901dd8dbf629ae9f853df5e17ebfb0be" />
+        </a>
+    </div>
+    
+    <!-- Total Credits Remaining -->
+    <div align="center" class="menu_list">
+		<span class="gray">
+        	თქვენს ანგარიშზეა <br /><span class="xxlarge dark english">43</span><br /> კრედიტი        </span>
+    </div>
+    
+    <!-- Web Money -->
+    <div align="center" class="menu_list bordered">
+    	<span class="gray">
+			და <span class = "dark english">0</span> ლარი        </span>
+    </div>
+    
+    <!-- Sent Messages -->
+    <div align="center" class="menu_list bordered">
+		<a href="index.php?page=10&lang=ge">გაგზავნილი შეტყობინებები</a>
+    </div>
+    
+    <!-- Buy Credits -->
+    <div align="center" class="menu_list bordered">
+		<a href="index.php?page=15&lang=ge">ანგარიშის შევსება</a>
+    </div>
+    
+    <!-- Credit History -->
+    <div align="center" class="menu_list bordered">
+		<a href="index.php?page=16&lang=ge">ანგარიშის ისტორია</a>
+    </div>
+    
+    <br />
+    
+    <!-- Action -->
+    <input type="hidden" id="act" name="act" value="2" />
+    
+    <!-- Log Out Button -->
+    <div align="center">
+    	<input type="submit" class="btn red_btn round_border medium" value="გამოსვლა" />
+    </div>
+
+</form>
+<!-- End user Action Form -->
+
+</div>                
+                <div class="clear_line"></div>
+                <br /><br />
+                
+                <center>
+                	<!-- Language Changer -->
+                	<a href="index.php?page=11&lang=en"><span class="simple_btn round_border english">English</span></a>                
+                
+                    <br /><br />
+                    
+                    <a href="http://www.facebook.com/pages/MagtiFun/221304477880297" target="_blank"><div class="login large_round_border dark shadow" align="center">
+                        შემოგვიერთდი <span class="english">Facebook</span>-ზე და დამატებით მიიღე<br />5 უფასო <span class="english">SMS</span>                    </div></a>
+                    
+                    <div class="clear_line"></div>
+                    <br />
+                    
+                    <!-- Facebook Like Box -->
+                    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FMagtiFun%2F221304477880297&amp;send=false&amp;layout=box_count&amp;width=50&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=70" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:70px;" allowTransparency="true"></iframe>
+                    
+                    <br /><br />
+                    
+                    <!-- TOP.GE Counter -->
+                    <script language="JavaScript" src="http://counter.top.ge/cgi-bin/cod?100+19222" type="text/javascript"></script>
+                    <noscript>
+                    <a target="_top" href="http://counter.top.ge/cgi-bin/showtop?19222">
+                    <img src="http://counter.top.ge/cgi-bin/count?ID:19222+JS:false" border="0" alt="TOP.GE" /></a>
+                    </noscript>
+                </center>
+            </div>
+        </div>
+        <div class="push"></div>
+        <br /><br />
+    </center>
+</div>
+
+<!-- Footer -->
+<div class="footer_div">
+<div class="footer">
+    <center>
+    	<table cellpadding="0" cellspacing="0" class="footer_table"><tbody>
+        	<tr>
+            	<td width="170px" align="left">
+                	<a href="http://www.magticom.ge" target="_blank"><img src="images/magti_logo.gif" alt="MagtiCom" title="MagtiCom" /></a>
+                </td>
+                <td width="90px" align="left">
+                	<a href="http://www.bali.ge" target="_blank"><img src="images/bali_logo.gif" alt="Bali" title="Bali" /></a>
+                </td>
+                <td width="110px" align="left">
+                	<a href="http://www.bani.ge" target="_blank"><img src="images/bani_logo.gif" alt="Bani" title="Bani" /></a>
+                </td>
+                <td width="160px" align="left">
+                	<a href="http://www.magtifix.ge" target="_blank"><img src="images/magtifix_logo.gif" alt="MagtiFix" title="MagtiFix" /></a>
+                </td>
+                <td width="160px" align="left">
+                	<a href="http://www.magtisat.ge" target="_blank"><img src="images/magtisat_logo.gif" alt="MagtiSat" title="MagtiFix" /></a>
+                </td>
+                <td>&nbsp;
+                	
+                </td>
+                <td width="195px" align="center">
+                	<span class="red footer_phone english">032 217 00 00, 110011</span><br />
+                	<span class="small dark">&nbsp;<a href="http://www.magticom.ge" target="_blank" class="dark">შპს "მაგთიკომი"</a> | <span class="english">2011</span></span>
+                </td>
+            </tr>
+        </tbody></table>
+    </center>
+</div></div>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-5052283-5']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
