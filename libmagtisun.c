@@ -20,9 +20,29 @@
 ---------------------------------------------------------------------------*/
 
 
-#include "stdinc.h"
-#include "slog.h"
+/* C includes */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <limits.h>
+
+/* Local includes */
 #include "libmagtisun.h"
+
+/* Dependency includes */
+#include <curl/curl.h>
+
+
+/*---------------------------------------------
+| Get library version
+---------------------------------------------*/
+const char* msl_get_version()
+{
+    static char verstr[128];
+    sprintf(verstr, "%s Build %d (%s)", MSLVERSION, MSLBUILD, __DATE__);
+    return verstr;
+}
 
 
 /*---------------------------------------------
@@ -35,13 +55,13 @@ void msl_init(MagtiSunLib* msl)
     char* line = NULL;
     size_t len = 0;
     ssize_t read;
-    char* user;
+    char* tmp;
 
     /* Clear values */
-    bzero(msl->user, sizeof(msl->user));
+    bzero(msl->usr, sizeof(msl->usr));
+    bzero(msl->pwd, sizeof(msl->pwd));
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
-    msl->pwd = NULL;
     msl->login = 0;
     msl->info = 0;
     msl->logged = 0;
@@ -57,9 +77,10 @@ void msl_init(MagtiSunLib* msl)
             if(strstr(line, "user") != NULL) 
             {
                 /* Get user info */
-                user = strtok(line, ":");
-                msl->pwd = strtok(NULL, ":");
-                strcpy(msl->user, user);
+                tmp = strtok(line, ":");
+                strcpy(msl->usr, tmp);
+                tmp = strtok(NULL, ":");
+                strcpy(msl->pwd, tmp);
                 msl->logged = 1;
             }
         }
@@ -73,9 +94,13 @@ void msl_init(MagtiSunLib* msl)
 ---------------------------------------------*/
 void msl_cli_init(MagtiSunLib* msl) 
 {
-    printf(ret_slog("[INPUT] Enter Username: "));
-    scanf("%s", msl->user);
-    msl->pwd = getpass(ret_slog("[INPUT] Enter Password: "));
+    /* Get username */
+    printf("[INPUT] Enter Username: ");
+    scanf("%s", msl->usr);
+
+    /* Get password (invisible) */
+    char* pwd = getpass("[INPUT] Enter Password: ");
+    strcpy(msl->pwd, pwd);
 }
 
 
@@ -84,9 +109,12 @@ void msl_cli_init(MagtiSunLib* msl)
 ---------------------------------------------*/
 void msl_init_sms(MagtiSunLib* msl)
 {
-    printf(ret_slog("[INPUT] Enter Number: "));
+    /* Get number */
+    printf("[INPUT] Enter Number: ");
     scanf("%s", msl->num);
-    printf(ret_slog("[INPUT] Enter Text: "));
+
+    /* Get sms text */
+    printf("[INPUT] Enter Text: ");
     scanf("%s", msl->txt);
 }
 
@@ -139,7 +167,7 @@ int msl_check_status(char *fname)
 ---------------------------------------------*/
 int msl_get_info(MagtiSunLib* msl) 
 {
-    slog(0, "[TODO] Get infotmation is added to TODO list");
+    printf("[TODO] Get infotmation is added to TODO list\n");
     exit(0);
 }
 
@@ -170,7 +198,7 @@ int msl_login(MagtiSunLib* msl)
     if (fp == NULL) return 0;
 
     /* Write key in file */
-    fprintf(fp, "%s:%s:user", msl->user, msl->pwd);
+    fprintf(fp, "%s:%s:user", msl->usr, msl->pwd);
 
     /* Close file and return */
     fclose(fp);
@@ -186,85 +214,79 @@ int msl_send(MagtiSunLib* msl)
     FILE *fp;
     CURL *curl;
     CURLcode res;
-    char login_url[128];
-    char login_val[64];
-    char sms_url[128];
-    char sms_val[64];
-    int done = 0;
+    char val[512];
+    char url[128];
     int ret = -1;
-
-    /* Get ready for login */
-    strcpy(login_url, "http://www.magtifun.ge/index.php?page=11&lang=ge");
-    sprintf(login_val, "user=%s&password=%s", msl->user, msl->pwd);
-    strcpy(sms_url, "http://www.magtifun.ge/scripts/sms_send.php");
-    sprintf(sms_val, "recipients=%s&message_body=%s", msl->num, msl->txt);
 
     /* Initialise curl */
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
 
     /* Check curl */
-    while (curl && !done) 
+    if (curl) 
     {
         /* Open output fileponter */
         fp = fopen(DISCARD_FILE, "w");
-        if (fp == NULL) break;
+        if (fp != NULL) 
+        {
+            /* Get ready for login */
+            strcpy(url, "http://www.magtifun.ge/index.php?page=11&lang=ge");
+            sprintf(val, "user=%s&password=%s", msl->usr, msl->pwd);
 
-        /* Get ready for login */
-        curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_easy_setopt(curl, CURLOPT_URL, &login_url);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &login_val);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(login_val));
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
-        curl_easy_setopt(curl, CURLOPT_POST, 1);
-        curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
-        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_LOGIN);
-        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+            /* Set curl options for login */
+            curl_easy_setopt(curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_easy_setopt(curl, CURLOPT_URL, &url);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &val);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(val));
+            curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
+            curl_easy_setopt(curl, CURLOPT_POST, 1);
+            curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
+            curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_LOGIN);
+            curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 
-        /* Send post request to magtifun */
-        res = curl_easy_perform(curl);
-        fclose(fp);
+            /* Send post request to magtifun */
+            res = curl_easy_perform(curl);
+            fclose(fp);
 
-        /* Check everything is ok */
-        if(res != CURLE_OK) break;
+            /* Open response fileponter */
+            if (res == CURLE_OK) fp = fopen(RESPONSE_FILE, "w");
+            if (fp != NULL) 
+            {
+                /* Get ready for send */
+                strcpy(url, "http://www.magtifun.ge/scripts/sms_send.php");
+                sprintf(val, "recipients=%s&message_body=%s", msl->num, msl->txt);
 
-        /* Open output fileponter */
-        fp = fopen(SAVE_FILE, "w");
-        if (fp == NULL) break;
+                /* Set curl options for send */
+                curl_easy_setopt(curl, CURLOPT_URL, &url);
+                curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &val);
+                curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(val));
+                curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
+                curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_SEND);
+                curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
+                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+                curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
 
-        /* Get ready for send */
-        curl_easy_setopt(curl, CURLOPT_URL, &sms_url);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, &sms_val);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(sms_val));
-        curl_easy_setopt(curl, CURLOPT_COOKIESESSION, 1);
-        curl_easy_setopt(curl, CURLOPT_COOKIEJAR, COOCKIE_SEND);
-        curl_easy_setopt(curl, CURLOPT_COOKIEFILE, COOCKIE_FILE);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+                /* Send post request to magtifun */
+                res = curl_easy_perform(curl);
+                fclose(fp);
 
-        /* Send post request to magtifun */
-        res = curl_easy_perform(curl);
-        fclose(fp);
+                /* Check everything is ok */
+                if(res == CURLE_OK) 
+                    ret = msl_check_status(RESPONSE_FILE);
+            }
 
-        /* Check everything is ok */
-        if(res != CURLE_OK) break;
-        ret = msl_check_status(SAVE_FILE);
-
-        /* Exit from while */
-        done = 1;
+            /* Cleanup */
+            curl_easy_cleanup(curl);
+            remove(RESPONSE_FILE);
+            remove(COOCKIE_LOGIN);
+            remove(COOCKIE_SEND);
+        }
     }
 
-    /* Cleanup curl */
-    if (curl) curl_easy_cleanup(curl);
+    /* Global cleanup curl */
     curl_global_cleanup();
 
-    /* Delete coockies */
-    remove(COOCKIE_LOGIN);
-    remove(COOCKIE_SEND);
-    remove(SAVE_FILE);
-
-    /* Return status */
     return ret;
 }

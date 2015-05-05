@@ -19,30 +19,47 @@
 
 ---------------------------------------------------------------------------*/
 
-#include "stdinc.h"
+/* For include header in CPP code */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/* Coockies files */
+#include <stdio.h>
+
+/* Coockie files */
+#define RESPONSE_FILE "/tmp/mslres.log"
 #define COOCKIE_LOGIN "cookie-name"
 #define COOCKIE_SEND "cookie-name-send"
 #define COOCKIE_FILE "cookie"
 #define DISCARD_FILE "/dev/null"
 #define LOGIN_FILE "/tmp/msl"
-#define SAVE_FILE "response"
+
+/* Version and build number */
+#define MSLVERSION "0.0.5 Snapshot"
+#define MSLBUILD 15
 
 
 /*---------------------------------------------
 | Structure of user variables
 ---------------------------------------------*/
 typedef struct {
-    char* res;
-    char* pwd;
+    /* User input */
     char txt[512];
+    char pwd[32];
     char num[16];
-    char user[16];
+    char usr[16];
+
+    /* Flags */
     short info;
     short login;
     short logged;
 } MagtiSunLib;
+
+
+/*---------------------------------------------
+| Get library version
+---------------------------------------------*/
+const char* msl_get_version();
 
 
 /*---------------------------------------------
@@ -85,3 +102,11 @@ void msl_logout();
 | Authorise and send sms
 ---------------------------------------------*/
 int msl_send(MagtiSunLib* msl);
+
+
+/*---------------------------------------------
+| For include header in CPP code
+---------------------------------------------*/
+#ifdef __cplusplus
+}
+#endif

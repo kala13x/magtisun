@@ -26,9 +26,9 @@ const char* get_version()
 ---------------------------------------------*/
 void greet(void) 
 {
-    printf("====================================================\n");
+    printf("=================================================\n");
     printf("MagtiSun-SMS: %s\n", get_version());
-    printf("====================================================\n");
+    printf("=================================================\n");
 } 
 
 
@@ -38,9 +38,8 @@ void greet(void)
 void usage(void) 
 {
     greet();
-    printf("Usage: magtisun [-u <username>] [-l] [-o] [-i] [-h]\n");
+    printf("Usage: magtisun [-l] [-o] [-i] [-h]\n");
     printf("options are:\n");
-    printf("   -u <username>       # magtifun user name\n");
     printf("   -l                  # do login\n");
     printf("   -o                  # logout from app\n");
     printf("   -i                  # get and print user information\n");

@@ -37,9 +37,9 @@ void cleanup(int sig)
 
     /* Make clean */
     slog(0, "[LIVE] Cleanup on exit");
+    remove(RESPONSE_FILE);
     remove(COOCKIE_LOGIN);
     remove(COOCKIE_SEND);
-    remove(SAVE_FILE);
     exit(0);
 }
 
@@ -50,11 +50,8 @@ void cleanup(int sig)
 static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
 {
     int c;
-    while ( (c = getopt(argc, argv, "u:l1:o1:i1:h1")) != -1) {
+    while ( (c = getopt(argc, argv, "l1:o1:i1:h1")) != -1) {
         switch (c) {
-        case 'u':
-            strcpy(msl->user, optarg);
-            break;
         case 'l':
             msl->login = 1;
             break;
@@ -111,7 +108,7 @@ int main(int argc, char **argv)
     }
 
     /* Check valid user */
-    if (strlen(msl.user) < 4 && !msl.pwd) 
+    if (strlen(msl.usr) < 4 && strlen(msl.pwd) < 4) 
     {
         slog(0, "[LIVE] Not logged in");
         msl_cli_init(&msl);
@@ -119,7 +116,7 @@ int main(int argc, char **argv)
 
     /* Check logged in user */
     if (msl.logged) 
-        slog(0, "[LIVE] Logged in as: %s", msl.user);
+        slog(0, "[LIVE] Logged in as: %s", msl.usr);
 
     /* Check info */
     if (msl.info) msl_get_info(&msl);
