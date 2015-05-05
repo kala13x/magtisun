@@ -28,6 +28,36 @@
 
 
 /*---------------------------------------------
+| Read login information
+---------------------------------------------*/
+void init_info(MagtiSunLib* msl) 
+{
+    /* Get username */
+    printf(ret_slog("[INPUT] Enter Username: "));
+    scanf("%s", msl->usr);
+
+    /* Get password (invisible) */
+    char* pwd = getpass(ret_slog("[INPUT] Enter Password: "));
+    strcpy(msl->pwd, pwd);
+}
+
+
+/*---------------------------------------------
+| Read sms information
+---------------------------------------------*/
+void init_sms(MagtiSunLib* msl)
+{
+    /* Get number */
+    printf(ret_slog("[INPUT] Enter Number: "));
+    scanf("%s", msl->num);
+
+    /* Get sms text */
+    printf(ret_slog("[INPUT] Enter Text: "));
+    scanf("%s", msl->txt);
+}
+
+
+/*---------------------------------------------
 | Parse cli arguments
 ---------------------------------------------*/
 static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
@@ -89,7 +119,7 @@ int main(int argc, char **argv)
     if (strlen(msl.usr) < 4 && strlen(msl.pwd) < 4) 
     {
         slog(0, "[LIVE] Not logged in");
-        msl_cli_init(&msl);
+        init_info(&msl);
     }
 
     /* Check logged in user */
@@ -100,7 +130,7 @@ int main(int argc, char **argv)
     if (msl.info) msl_get_info(&msl);
 
     /* Read sms info from user input */
-    msl_init_sms(&msl);
+    init_sms(&msl);
 
     /* Send sms */
     slog(0, "[LIVE] Sending message...");
