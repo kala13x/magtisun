@@ -30,7 +30,7 @@
 /*---------------------------------------------
 | Read login information
 ---------------------------------------------*/
-void init_info(MagtiSunLib* msl) 
+void user_init_info(MagtiSunLib* msl) 
 {
     /* Get username */
     printf(ret_slog("[INPUT] Enter Username: "));
@@ -45,7 +45,7 @@ void init_info(MagtiSunLib* msl)
 /*---------------------------------------------
 | Read sms information
 ---------------------------------------------*/
-void init_sms(MagtiSunLib* msl)
+void user_init_sms(MagtiSunLib* msl)
 {
     /* Get number */
     printf(ret_slog("[INPUT] Enter Number: "));
@@ -93,7 +93,6 @@ int main(int argc, char **argv)
     /* Used variables */
     MagtiSunLib msl;
     char answer[8];
-    int ret = 0;
 
     /* Greet users */
     greet();
@@ -116,40 +115,37 @@ int main(int argc, char **argv)
     /* Login user */
     if (msl.login)
     {
-        if (!msl.logged) 
-        {
-            /* User input info */
-            init_info(&msl);
-
-            /* Do login */
-            if(msl_login(&msl)) 
-                slog(0, "[LIVE] Logged in as: %s", msl.usr);
-        }
-        else 
+        /* Check logged user */
+        if (msl.logged) 
         {
             slog(0, "[LIVE] Please log out first");
             exit(0);
         }
+
+        /* User input info */
+        user_init_info(&msl);
+
+        /* Do login */
+        if(msl_login(&msl)) 
+            slog(0, "[LIVE] Logged in as: %s", msl.usr);
     }
 
     /* Check valid username and password */
     if (strlen(msl.usr) < 4 || strlen(msl.pwd) < 4) 
     {
         slog(0, "[LIVE] Not logged in");
-        init_info(&msl);
+        user_init_info(&msl);
     }
 
     /* Check info */
     if (msl.info) msl_get_info(&msl);
 
     /* Read sms info from user input */
-    init_sms(&msl);
+    user_init_sms(&msl);
 
     /* Send sms */
     slog(0, "[LIVE] Sending message...");
-
-    ret = msl_send(&msl);
-    if (ret>=0) 
+    if (msl_send(&msl) >= 0) 
     {
         slog(0, "[LIVE] Message sent");
 
