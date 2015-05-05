@@ -157,7 +157,7 @@ int main(int argc, char **argv)
             scanf("%s", answer);
 
             /* Check answer answer */
-            if (strstr(answer, "y") != NULL || strstr(answer, "Y") != NULL) 
+            if (strcmp(answer, "y") == 0 || strcmp(answer, "Y") == 0) 
             {
                 if(msl_login(&msl))
                     slog(0, "[LIVE] Saved logged session");
