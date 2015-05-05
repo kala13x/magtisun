@@ -27,24 +27,6 @@
 
 
 /*---------------------------------------------
-| Handle signals and clean (security reasons)
----------------------------------------------*/
-void cleanup(int sig)
-{
-    /* Handle signals */
-    if (sig == SIGILL || sig == SIGSEGV) 
-        slog(0, "[ERROR] Incorrect inputed data");
-
-    /* Make clean */
-    slog(0, "[LIVE] Cleanup on exit");
-    remove(RESPONSE_FILE);
-    remove(COOCKIE_LOGIN);
-    remove(COOCKIE_SEND);
-    exit(0);
-}
-
-
-/*---------------------------------------------
 | Parse cli arguments
 ---------------------------------------------*/
 static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
@@ -88,11 +70,6 @@ int main(int argc, char **argv)
     init_slog("magtisun", 3);
     msl_init(&msl);
 
-    /* Catch ilegal signal */
-    signal(SIGINT, cleanup);
-    signal(SIGSEGV, cleanup);
-    signal(SIGILL , cleanup);
-
     /* Parse Commandline Arguments */
     if (parse_arguments(argc, argv, &msl) < 0) 
     { 
@@ -101,7 +78,7 @@ int main(int argc, char **argv)
     }
 
     /* Log in user */
-    if (msl.login) 
+    if (msl.login)
     {
         if(msl_login(&msl)) 
             slog(0, "[LIVE] Logged in");

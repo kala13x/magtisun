@@ -24,6 +24,3 @@ Desc:   Standart includes for magtisun project
 #include <assert.h>
 #include <ctype.h>
 #include <time.h>
-
-/* Dependency includes */
-#include <curl/curl.h>

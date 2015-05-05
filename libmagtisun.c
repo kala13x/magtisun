@@ -26,12 +26,13 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
-
-/* Local includes */
-#include "libmagtisun.h"
+#include <signal.h>
 
 /* Dependency includes */
 #include <curl/curl.h>
+
+/* Local includes */
+#include "libmagtisun.h"
 
 
 /*---------------------------------------------
@@ -42,6 +43,66 @@ const char* msl_get_version()
     static char verstr[128];
     sprintf(verstr, "%s Build %d (%s)", MSLVERSION, MSLBUILD, __DATE__);
     return verstr;
+}
+
+
+/*---------------------------------------------
+| Handle signals and clean (security reasons)
+---------------------------------------------*/
+void msl_cleanup(int sig)
+{
+    /* Handle signals */
+    if (sig == SIGILL || sig == SIGSEGV) 
+        printf("[ERROR] Incorrect inputed data\n");
+
+    /* Make clean */
+    printf("[LIVE] Cleanup on exit\n");
+    remove(RESPONSE_FILE);
+    remove(COOCKIE_LOGIN);
+    remove(COOCKIE_SEND);
+    exit(-1);
+}
+
+
+/*---------------------------------------------
+| Decrypt string (security reasons)
+---------------------------------------------*/
+char* msl_decrypt(char *str) 
+{
+    /* Used variables */
+    char* decrypted;
+    unsigned int i;
+    int key = 0xFACA;
+
+    /* Decrypt */
+    for(i=0;i<strlen(str);++i)
+    {
+        str[i] = str[i] + key;
+    }
+    decrypted = strdup(str);
+
+    return decrypted;
+}
+
+
+/*---------------------------------------------
+| Crypt string (security reasons)
+---------------------------------------------*/
+char* msl_crypt(char *str)
+{
+    /* Used variables */
+    unsigned int i;
+    int key = 0xFACA;
+    char *crypted;
+
+    /* Crypt */
+    for(i=0;i<strlen(str);++i)
+    {
+        str[i] = str[i] - key;
+    }
+    crypted = strdup(str);
+
+    return crypted;
 }
 
 
@@ -57,16 +118,23 @@ void msl_init(MagtiSunLib* msl)
     ssize_t read;
     char* tmp;
 
+    /* Catch ilegal signal */
+    signal(SIGINT, msl_cleanup);
+    signal(SIGSEGV, msl_cleanup);
+    signal(SIGILL , msl_cleanup);
+
     /* Clear values */
     bzero(msl->usr, sizeof(msl->usr));
     bzero(msl->pwd, sizeof(msl->pwd));
     bzero(msl->num, sizeof(msl->num));
     bzero(msl->txt, sizeof(msl->txt));
+
+    /* Set flags */
     msl->login = 0;
     msl->info = 0;
     msl->logged = 0;
 
-    /* Open templorary file */
+    /* Open session file */
     fp = fopen(LOGIN_FILE, "r");
     if (fp != NULL) 
     {
@@ -76,6 +144,9 @@ void msl_init(MagtiSunLib* msl)
             /* Find user in file */
             if(strstr(line, "user") != NULL) 
             {
+                /* Decrypt line */
+                line = msl_decrypt(line);
+
                 /* Get user info */
                 tmp = strtok(line, ":");
                 strcpy(msl->usr, tmp);
@@ -187,6 +258,10 @@ void msl_logout()
 ---------------------------------------------*/
 int msl_login(MagtiSunLib* msl) 
 {
+    /* Session info */
+    char session[64];
+    char* crypted;
+
     /* Remove existing fole */
     remove(LOGIN_FILE);
 
@@ -195,15 +270,23 @@ int msl_login(MagtiSunLib* msl)
 
     /* Open file pointer */
     FILE *fp = fopen(LOGIN_FILE, "a");
-    if (fp == NULL) return 0;
+    if (fp != NULL) 
+    {
+        /* Crypt session key */
+        sprintf(session, "%s:%s", msl->usr, msl->pwd);
+        crypted = msl_crypt(session);
 
-    /* Write key in file */
-    fprintf(fp, "%s:%s:user", msl->usr, msl->pwd);
+        /* Write key in file */
+        fprintf(fp, "%s:user", crypted);
 
-    /* Close file and return */
-    fclose(fp);
-    return 1;
+        /* Close file and return */
+        fclose(fp);
+        return 1;
+    }
+
+    return 0;
 }
+
 
 /*---------------------------------------------
 | Authorise and send sms

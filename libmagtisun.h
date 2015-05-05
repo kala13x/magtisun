@@ -35,8 +35,8 @@ extern "C" {
 #define LOGIN_FILE "/tmp/msl"
 
 /* Version and build number */
-#define MSLVERSION "0.0.5 Snapshot"
-#define MSLBUILD 15
+#define MSLVERSION "0.0.6 Snapshot"
+#define MSLBUILD 16
 
 
 /*---------------------------------------------
@@ -48,7 +48,6 @@ typedef struct {
     char pwd[32];
     char num[16];
     char usr[16];
-
     /* Flags */
     short info;
     short login;
@@ -60,6 +59,24 @@ typedef struct {
 | Get library version
 ---------------------------------------------*/
 const char* msl_get_version();
+
+
+/*---------------------------------------------
+| Handle signals and clean (security reasons)
+---------------------------------------------*/
+void msl_cleanup(int sig);
+
+
+/*---------------------------------------------
+| Decrypt string (security reasons)
+---------------------------------------------*/
+char* msl_decrypt(char *str);
+
+
+/*---------------------------------------------
+| Crypt string (security reasons)
+---------------------------------------------*/
+char* msl_crypt(char *str);
 
 
 /*---------------------------------------------
