@@ -328,12 +328,12 @@ int msl_get_info(MagtiSunLib* msl)
             /* Open response fileponter */
             if (res == CURLE_OK) 
                 ret = msl_check_info(RESPONSE_FILE, msl);
-
-            /* Cleanup */
-            curl_easy_cleanup(curl);
-            remove(COOCKIE_LOGIN);
-            remove(COOCKIE_FILE);
         }
+        
+        /* Cleanup */
+        curl_easy_cleanup(curl);
+        remove(COOCKIE_LOGIN);
+        remove(COOCKIE_FILE);
     }
 
     /* Global cleanup curl */
