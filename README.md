@@ -30,7 +30,7 @@ You can get information from magtifun such as your name at magtifun and number o
 
 The command is simple:
 ```
-magtifun -i
+magtisun -i
 ```
 
 Output example:
