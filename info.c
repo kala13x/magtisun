@@ -37,7 +37,6 @@ void greet(void)
 ---------------------------------------------*/
 void usage(void) 
 {
-    greet();
     printf("Usage: magtisun [-l] [-o] [-i] [-h]\n");
     printf("options are:\n");
     printf("   -l                  # do login\n");
