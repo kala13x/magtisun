@@ -98,9 +98,6 @@ int main(int argc, char **argv)
     char answer[8];
     char* str;
 
-    /* Greet users */
-    greet();
-
     /* Initialise variables */
     init_slog("magtisun", 3);
     msl_init(&msl);
@@ -111,6 +108,9 @@ int main(int argc, char **argv)
         usage();
         return 0;
     }
+
+    /* Greet users */
+    greet();
 
     /* Check logged user */
     if (msl.logged) 
