@@ -25,6 +25,25 @@ magtisun -o
 ```
 This command will remove templorary file where your encrypted key is saved.
 
+###Get user information
+You can get information from magtifun such as your name at magtifun and number of how many sms do you left.
+
+The command is simple:
+```
+magtifun -i
+```
+
+Output example:
+
+```
+[kala@build-box magtisun]$ ./magtisun -i
+====================================================
+MagtiSun-SMS: 0.1.2 Snapshot Build 23 (May  6 2015)
+====================================================
+2015.05.06-12:34:40 - [LIVE] Logged in as: 598998592
+2015.05.06-12:34:40 - [LIVE] User: Travis Jenkins
+2015.05.06-12:34:40 - [LIVE] Messages left: 47
+```
 
 ###Compilation
 Compilation of this project is possible with Makefile (just type 'make' in terminal).
