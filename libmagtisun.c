@@ -130,12 +130,10 @@ void msl_init(MagtiSunLib* msl)
     bzero(msl->txt, sizeof(msl->txt));
     bzero(msl->name, sizeof(msl->name));
 
-
     /* Set flags */
-    msl->login = 0;
-    msl->info = 0;
     msl->logged = 0;
     msl->mleft=-1;
+
     /* Open session file */
     fp = fopen(LOGIN_FILE, "r");
     if (fp != NULL) 

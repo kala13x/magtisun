@@ -28,17 +28,42 @@
 
 
 /*---------------------------------------------
+| Structure of flags
+---------------------------------------------*/
+typedef struct {
+    short info;
+    short login;
+    short logout;
+} MagtiSunFlags;
+
+
+/*---------------------------------------------
+| Initialise flags
+---------------------------------------------*/
+void init_flags (MagtiSunFlags* msf) 
+{
+    msf->info = 0;
+    msf->login = 0;
+    msf->logout = 0;
+}
+
+
+/*---------------------------------------------
 | Read login information
 ---------------------------------------------*/
 void user_init_info(MagtiSunLib* msl) 
 {
+    /* String variable */
+    char *str;
+
     /* Get username */
-    char *str = ret_slog("[INPUT] Enter Username: ");
+    str = ret_slog("[INPUT] Enter Username: ");
     printf("%s", str);
     scanf("%s", msl->usr);
 
     /* Get password (invisible) */
-    char* pwd = getpass(ret_slog("[INPUT] Enter Password: "));
+    str = ret_slog("[INPUT] Enter Password: ");
+    char* pwd = getpass(str);
     strcpy(msl->pwd, pwd);
 }
 
@@ -48,8 +73,11 @@ void user_init_info(MagtiSunLib* msl)
 ---------------------------------------------*/
 void user_init_sms(MagtiSunLib* msl)
 {
+    /* String variable */
+    char *str;
+
     /* Get number */
-    char *str = ret_slog("[INPUT] Enter Number: ");
+    str = ret_slog("[INPUT] Enter Number: ");
     printf("%s", str);
     scanf("%s", msl->num);
 
@@ -63,20 +91,19 @@ void user_init_sms(MagtiSunLib* msl)
 /*---------------------------------------------
 | Parse cli arguments
 ---------------------------------------------*/
-static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
+static int parse_arguments(int argc, char *argv[], MagtiSunFlags* msf)
 {
     int c;
     while ( (c = getopt(argc, argv, "l1:o1:i1:h1")) != -1) {
         switch (c) {
         case 'l':
-            msl->login = 1;
+            msf->login = 1;
             break;
         case 'o':
-            slog(0, "[LIVE] Logging out");
-            msl_logout();
+            msf->logout = 1;
             break;
         case 'i':
-            msl->info = 1;
+            msf->info = 1;
             break;
         case 'h':
         default:
@@ -94,6 +121,7 @@ static int parse_arguments(int argc, char *argv[], MagtiSunLib* msl)
 int main(int argc, char **argv)
 {
     /* Used variables */
+    MagtiSunFlags msf;
     MagtiSunLib msl;
     char answer[8];
     char* str;
@@ -103,13 +131,21 @@ int main(int argc, char **argv)
 
     /* Initialise variables */
     init_slog("magtisun", 3);
+    init_flags(&msf);
     msl_init(&msl);
 
     /* Parse Commandline Arguments */
-    if (parse_arguments(argc, argv, &msl) < 0) 
+    if (parse_arguments(argc, argv, &msf) < 0) 
     { 
         usage();
         return 0;
+    }
+
+    /* Check logout argument */
+    if (msf.logout) 
+    {
+        slog(0, "[LIVE] Logging out");
+        msl_logout();
     }
 
     /* Check logged user */
@@ -117,7 +153,7 @@ int main(int argc, char **argv)
         slog(0, "[LIVE] Logged in as: %s", msl.usr);
 
     /* Login user */
-    if (msl.login)
+    if (msf.login)
     {
         /* Check logged user */
         if (msl.logged) 
@@ -143,7 +179,7 @@ int main(int argc, char **argv)
     }
 
     /* Check info */
-    if (msl.info) 
+    if (msf.info) 
     {
         /* Get info */
         if(msl_get_info(&msl) >= 0) 
@@ -156,7 +192,7 @@ int main(int argc, char **argv)
         {
             slog(0, "[ERROR] Can not get info");
             slog(0, "[INFO] The reason can be wrong username and/or password");
-            slog(0, "[INFO] Also make sure you can ping magtifun.ge");
+            slog(0, "[INFO] Also make sure magtifun.ge is not down");
             exit(0);
         }
     }
@@ -190,7 +226,7 @@ int main(int argc, char **argv)
     {
         slog(0, "[ERROR] Can not send sms");
         slog(0, "[INFO] The reason can be wrong username and/or password");
-        slog(0, "[INFO] Also make sure you can ping magtifun.ge");
+        slog(0, "[INFO] Also make sure magtifun.ge is not down");
     }
 
     return 0;
