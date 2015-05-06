@@ -128,6 +128,7 @@ int main(int argc, char **argv)
         /* Do login */
         if(msl_login(&msl)) 
             slog(0, "[LIVE] Logged in as: %s", msl.usr);
+        exit(0);
     }
 
     /* Check valid username and password */
