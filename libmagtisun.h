@@ -36,8 +36,8 @@ extern "C" {
 #define LOGIN_FILE "/tmp/msl"
 
 /* Version and build number */
-#define MSLVERSION "0.1.2 Snapshot"
-#define MSLBUILD 22
+#define MSLVERSION "1.0.2 Snapshot"
+#define MSLBUILD 25
 
 
 /*---------------------------------------------

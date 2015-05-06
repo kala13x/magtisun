@@ -457,13 +457,13 @@ int msl_send(MagtiSunLib* msl)
                 if(res == CURLE_OK) 
                     ret = msl_check_status(RESPONSE_FILE);
             }
-
-            /* Cleanup */
-            curl_easy_cleanup(curl);
-            remove(RESPONSE_FILE);
-            remove(COOCKIE_LOGIN);
-            remove(COOCKIE_SEND);
         }
+
+        /* Cleanup */
+        curl_easy_cleanup(curl);
+        remove(RESPONSE_FILE);
+        remove(COOCKIE_LOGIN);
+        remove(COOCKIE_SEND);
     }
 
     /* Global cleanup curl */
