@@ -33,7 +33,8 @@
 void user_init_info(MagtiSunLib* msl) 
 {
     /* Get username */
-    printf(ret_slog("[INPUT] Enter Username: "));
+    char *str = ret_slog("[INPUT] Enter Username: ");
+    printf("%s", str);
     scanf("%s", msl->usr);
 
     /* Get password (invisible) */
@@ -48,11 +49,13 @@ void user_init_info(MagtiSunLib* msl)
 void user_init_sms(MagtiSunLib* msl)
 {
     /* Get number */
-    printf(ret_slog("[INPUT] Enter Number: "));
+    char *str = ret_slog("[INPUT] Enter Number: ");
+    printf("%s", str);
     scanf("%s", msl->num);
 
     /* Get sms text */
-    printf(ret_slog("[INPUT] Enter Text: "));
+    str = ret_slog("[INPUT] Enter Text: ");
+    printf("%s", str);
     scanf("%s", msl->txt);
 }
 
@@ -93,6 +96,7 @@ int main(int argc, char **argv)
     /* Used variables */
     MagtiSunLib msl;
     char answer[8];
+    char* str;
 
     /* Greet users */
     greet();
@@ -170,7 +174,8 @@ int main(int argc, char **argv)
         if (!msl.logged) 
         {
             /* User input answer */
-            printf(ret_slog("[LIVE] Do you want to stay logged? (y/n): "));
+            str = ret_slog("[LIVE] Do you want to stay logged? (y/n): ");
+            printf("%s", str);
             scanf("%s", answer);
 
             /* Check answer answer */
