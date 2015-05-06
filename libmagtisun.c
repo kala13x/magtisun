@@ -132,7 +132,7 @@ void msl_init(MagtiSunLib* msl)
 
     /* Set flags */
     msl->logged = 0;
-    msl->mleft=-1;
+    msl->mleft = -1;
 
     /* Open session file */
     fp = fopen(LOGIN_FILE, "r");
@@ -266,11 +266,10 @@ int msl_check_info(char* fname, MagtiSunLib* msl)
                 sscanf(name, "%32[^<]<", msl->name);
             }
         }
-    }
 
-    /* Cleanup */
-    fclose(fp);
-    remove(RESPONSE_FILE);
+        /* Close file */
+        fclose(fp);
+    }
 
     /* Check valid data */
     if(strlen(msl->name) > 4 && msl->mleft >= 0)
@@ -329,9 +328,10 @@ int msl_get_info(MagtiSunLib* msl)
             if (res == CURLE_OK) 
                 ret = msl_check_info(RESPONSE_FILE, msl);
         }
-        
+
         /* Cleanup */
         curl_easy_cleanup(curl);
+        remove(RESPONSE_FILE);
         remove(COOCKIE_LOGIN);
         remove(COOCKIE_FILE);
     }
