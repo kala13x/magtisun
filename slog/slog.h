@@ -64,8 +64,8 @@ const char* slog_version();
  * and reads loggin level and save to file flag from it.
  *
  * Arguments are:
- * @ fname - file name where log will be saved
- * @ max - maximum aloved log level
+ * @ First argument is file name where log will be saved
+ * @ Second argument is maximum allowed log level
  */
 void init_slog(char* fname, int max);
 
