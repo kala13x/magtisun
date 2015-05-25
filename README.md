@@ -51,7 +51,7 @@ To compile magtisun project, at first you mast compile libmagtifun and slog.
 
 ```
 git clone git@github.com:kala13x/magtisun.git
-cd magtisun/lib
+cd magtisun/libmagtisun
 make
 cd ../slog
 make
