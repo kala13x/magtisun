@@ -47,11 +47,13 @@ MagtiSun-SMS: 0.1.2 Snapshot Build 23 (May  6 2015)
 
 ###Compilation
 Compilation of this project is possible with Makefile (just type 'make' in terminal).
-To compile magtisun project, at first you mast compile libmagtifun. 
+To compile magtisun project, at first you mast compile libmagtifun and slog. 
 
 ```
 git clone git@github.com:kala13x/magtisun.git
 cd magtisun/lib
+make
+cd ../slog
 make
 cd ..
 make

@@ -1,15 +1,14 @@
-LIB = -lcurl lib/libmagtisun.so
-CFLAGS = -g -O2 -Wall -Ilib
+LIB = -lcurl libmagtisun/libmagtisun.so slog/slog.so
+CFLAGS = -g -O2 -Wall -Ilibmagtisun -Islog
 PREFIX = /usr/local
 
-OBJS = magtisun.o info.o slog.o
+OBJS = magtisun.o info.o
 
 all: $(OBJS)
 	$(CC) $(CFLAGS) -o magtisun  $(LIB) $(OBJS)
 
-magtisun.o: info.h slog.h stdinc.h
+magtisun.o: info.h stdinc.h
 info.o: info.h stdinc.h
-slog.o: slog.h
 
 .PHONY: install
 install: magtisun
