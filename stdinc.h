@@ -1,9 +1,9 @@
-/*----------------------------------------------------
-Name:   stdinc.h
-Date:   2015.05.03
-Auth:   Sun Dro (a.k.a. kala13x)
-Desc:   Standart includes for magtisun project
-----------------------------------------------------*/
+/*
+ * info.c
+ * Copyleft (C) 2015  Sun Dro (a.k.a 7th Ghost)
+ *
+ * Standart includes for magtisun project
+ */
 
 /* Linux includes */
 #include <sys/stat.h>

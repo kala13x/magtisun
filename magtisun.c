@@ -19,7 +19,7 @@
  */
 
 #include "libmagtisun/libmagtisun.h"
-#include "slog/slog.h"
+#include "libslog/slog.h"
 #include "stdinc.h"
 #include "info.h"
 

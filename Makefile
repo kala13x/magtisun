@@ -1,5 +1,5 @@
-LIB = -lcurl libmagtisun/libmagtisun.so slog/slog.so
-CFLAGS = -g -O2 -Wall -Ilibmagtisun -Islog
+LIB = -lcurl libmagtisun/libmagtisun.so libslog/slog.so
+CFLAGS = -g -O2 -Wall -Ilibmagtisun -Ilibslog
 PREFIX = /usr/local
 
 OBJS = magtisun.o info.o
