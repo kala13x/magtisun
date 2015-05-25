@@ -21,7 +21,7 @@
 ---------------------------------------------------------------------------*/
 
 
-#include "libmagtisun.h"
+#include "lib/libmagtisun.h"
 #include "stdinc.h"
 #include "slog.h"
 #include "info.h"

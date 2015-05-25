@@ -47,9 +47,13 @@ MagtiSun-SMS: 0.1.2 Snapshot Build 23 (May  6 2015)
 
 ###Compilation
 Compilation of this project is possible with Makefile (just type 'make' in terminal).
+To compile magtisun project, at first you mast compile libmagtifun. 
+
 ```
 git clone git@github.com:kala13x/magtisun.git
-cd  magtisun
+cd magtisun/lib
+make
+cd ..
 make
 sudo make install
 ```
@@ -67,7 +71,7 @@ Just put this files in your project directory and include header file in your ap
 
 You can see examples in Makefile and magtisun.c files to see how to compile correctly and use functions from libmagtisun. 
 
-Full API documentation will be available soon.
+You can see API documentation in libmagtisun.h file. Each function is fully documented.
 
 
 ###Simple CLI interface
