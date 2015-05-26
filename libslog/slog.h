@@ -55,7 +55,7 @@ typedef struct {
 /* 
  * Get library version. Function returns version and build number of 
  * slog library. Return value is static char pointer.
--*/
+ */
 const char* slog_version();
 
 

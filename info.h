@@ -10,7 +10,7 @@
 
 /* Version and build number */
 #define VERSION "0.1.3 Snapshot"
-#define BUILD 24
+#define BUILD 26
 
 
 /* 

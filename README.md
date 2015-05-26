@@ -1,4 +1,4 @@
-MagtiSun - Version: 0.1.3 Snapshot BUILD 24
+MagtiSun - Version: 0.1.3 Snapshot BUILD 26
 ----
 
  MagtiSun is commandline application which makes you able to send sms with terminal via magtifun. Also you can implement libmagtisun in another C/C++ application prjects to send sms from your application with or without graphical interface. Software is written for educational purposes and is distributed in the hope that it will be useful for anyone interested in this field.
@@ -15,11 +15,11 @@ options are:
 Software has invisible password input for security reasons.
 
 ###Login
-If you dont want to type your username and password everytime when you launch magtisun, you can just login in application with parameter -l and magtisun will crypt and save your user information in templorary file at your /tmp/ directory. Because of known security reason, that password must not be visible for others, magtisun crypts key before it saves it to file. If you do cat of that file, you will not be able to see password. String in file will be something like that:
+If you dont want to type your username and password everytime when you launch magtisun, you can just login -l and magtisun will crypt and save your user information in templorary file at your /tmp/ directory. Because of known security reasons, that password must not be visible for others, magtisun crypts key before it saves in file. If you will cat that file, you will not be able to see password. String in file will be something like that:
 ```
 ����������������
 ```
-When you launch application after login, magtisun will decrypt this file to get user and password for authorisation at magtiofun. If you done everything and you dont need logged in session, you can just logout from application with command:
+When you launch application after login, magtisun will decrypt this file to get user and password for authorisation at magtiofun. If you done everything and you dont need logged session, you can just logout from application with command:
 ```
 magtisun -o
 ```
@@ -47,7 +47,7 @@ MagtiSun-SMS: 0.1.2 Snapshot Build 23 (May  6 2015)
 
 ###Compilation
 Compilation of this project is possible with Makefile (just type 'make' in terminal).
-If you want to compile project manually, at first you mast compile libmagtifun and slog. 
+If you want to compile project manualy, at first you mast compile libmagtifun and slog. 
 
 ```
 git clone git@github.com:kala13x/magtisun.git
@@ -72,17 +72,18 @@ chmod +x build.sh
 ###Dependencies
 Make sure you have [curl development library](https://github.com/bagder/curl) installed on your computer to compile magtisun.
 
-###API Usage
-If you want to implement this library in another C/C++ project, you need only two files:
+###Standalone Library and API Usage
+#####LibMagtiSun - Version: 1.0.2 Snapshot BUILD 31
+You can implement this library in another C/C++ project. You can copy files from libmagtisun directory and compile it by yourself.
 ```
-libmagtisun.c
-libmagtisun.h
+cd libmagtisun
+make
 ```
-Just put this files in your project directory and include header file in your application and you will be able to use those functions which are defined in header file. Also please make sure that you are compiling and linking libmagtisun.c while compiling your project.
+Just include header file in your application and you will be able to use those functions which are defined in header file. Also please make sure that you are linking libmagtisun.so shared library while compiling your project.
 
 You can see examples in Makefile and magtisun.c files to see how to compile correctly and use functions from libmagtisun. 
 
-You can see API documentation in libmagtisun.h file. Each function is fully documented.
+You can see API documentation in libmagtisun.h file. Each function has detailed documentations.
 
 
 ###Simple CLI interface

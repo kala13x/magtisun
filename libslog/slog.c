@@ -54,7 +54,7 @@ static SLogValues slog_val;
 /* 
  * Get library version. Function returns version and build number of 
  * slog library. Return value is static char pointer.
--*/
+ */
 const char* slog_version()
 {
     static char verstr[128];

@@ -36,7 +36,7 @@ extern "C" {
 
 /* Version and build number */
 #define MSLVERSION "1.0.2 Snapshot"
-#define MSLBUILD 25
+#define MSLBUILD 31
 
 
 /* Structure of user variables */
@@ -59,10 +59,10 @@ const char* msl_get_version();
 
 
 /*
- * Function decrypts recently cripted string with msl_crypt() and 
+ * Function decrypts recently crypted string with msl_crypt() and 
  * returns decrypted string. Return value char pointer. 
  *
- * @ Argument is char pointer where encrypted string is written.
+ * Argument is char pointer of encrypted string.
  */
 char* msl_decrypt(char *str);
 
@@ -72,7 +72,7 @@ char* msl_decrypt(char *str);
  * as char pointer. Its because of we dont want to make visible
  * our authorisation data for others.
  *
- * @ Argument is char pointer where is witten string to encrypt.
+ * Argument is char pointer of that string which ecnryption we want.
  */
 char* msl_crypt(char *str);
 
@@ -82,7 +82,7 @@ char* msl_crypt(char *str);
  * MagtiSunLib structure and initializes it for future use. It
  * also checks if user is alredy logged in and writes info in login flag.
  *
- * If user is logged in, msl->logged flag vill be 1, otherwise it will be 0.
+ * If user is logged in, msl->logged flag will be 1, otherwise it will be 0.
  */
 void msl_init(MagtiSunLib* msl);
 
@@ -95,7 +95,7 @@ void msl_init(MagtiSunLib* msl);
  * @ msl->usr - username
  * @ msl->pwd - password
  *
- * @ Argument is pointer of MagtiSunLib structure
+ * Argument is pointer of MagtiSunLib structure
  */
 void msl_cli_init(MagtiSunLib* msl);
 
@@ -107,7 +107,7 @@ void msl_cli_init(MagtiSunLib* msl);
  * @ msl->num - adress number
  * @ msl->txt - sms text
  *
- * @ Argument is pointer of MagtiSunLib structure
+ * Argument is pointer of MagtiSunLib structure
  */
 void msl_init_sms(MagtiSunLib* msl);
 
@@ -119,7 +119,7 @@ void msl_init_sms(MagtiSunLib* msl);
  * @ msl->name - username at magtifun
  * @ msl->mleft - left messages at magtifun
  *
- * @ Argument is pointer of MagtiSunLib structure
+ * Argument is pointer of MagtiSunLib structure
  */
 int msl_get_info(MagtiSunLib* msl);
 
@@ -131,7 +131,7 @@ int msl_get_info(MagtiSunLib* msl);
  * required initialization of login variables. Username and password will be
  * initialized from file with the msl_init() function.
  *
- * @ Argument is pointer of MagtiSunLib structure
+ * Argument is pointer of MagtiSunLib structure
  */
 int msl_login(MagtiSunLib* msl);
 
