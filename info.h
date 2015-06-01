@@ -9,8 +9,9 @@
 #include "stdinc.h"
 
 /* Version and build number */
-#define VERSION "0.1.3 Snapshot"
-#define BUILD 26
+#define VERSION_MAX 1
+#define VERSION_MIN 0
+#define BUILD 31
 
 
 /* 

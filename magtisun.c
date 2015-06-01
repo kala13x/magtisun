@@ -24,9 +24,7 @@
 #include "info.h"
 
 
-/*---------------------------------------------
-| Structure of flags
----------------------------------------------*/
+/* MagtiSun Flags*/
 typedef struct {
     short info;
     short login;
@@ -34,10 +32,11 @@ typedef struct {
 } MagtiSunFlags;
 
 
-/*---------------------------------------------
-| Initialise flags
----------------------------------------------*/
-void init_flags (MagtiSunFlags* msf) 
+/* 
+ * init_flags - Initialise MagtiSun flags.
+ * Function gives sets 0 to each flag.
+ */
+void init_flags(MagtiSunFlags* msf) 
 {
     msf->info = 0;
     msf->login = 0;
@@ -45,10 +44,15 @@ void init_flags (MagtiSunFlags* msf)
 }
 
 
-/*---------------------------------------------
-| Read login information
----------------------------------------------*/
-void user_init_info(MagtiSunLib* msl) 
+/*
+ * user_init_info - Initialise login variables from commandline input. 
+ * Function initializes username and password (invisible password input) 
+ * from commandline and saves values at MagtiSunLib structure as:
+ * 
+ * @ msl->usr - username
+ * @ msl->pwd - password
+ */
+ void user_init_info(MagtiSunLib* msl) 
 {
     /* String variable */
     char *str;
@@ -65,9 +69,13 @@ void user_init_info(MagtiSunLib* msl)
 }
 
 
-/*---------------------------------------------
-| Read sms information
----------------------------------------------*/
+/*
+ * msl_init_sms - Initialize sms variables from commandline input. 
+ * Function initializes mobile number and sms text from commandline.
+ * 
+ * @ msl->num - adress number
+ * @ msl->txt - sms text
+ */
 void user_init_sms(MagtiSunLib* msl)
 {
     /* String variable */
@@ -85,9 +93,7 @@ void user_init_sms(MagtiSunLib* msl)
 }
 
 
-/*---------------------------------------------
-| Parse cli arguments
----------------------------------------------*/
+/* Parse cli arguments */
 static int parse_arguments(int argc, char *argv[], MagtiSunFlags* msf)
 {
     int c;
@@ -112,9 +118,6 @@ static int parse_arguments(int argc, char *argv[], MagtiSunFlags* msf)
 }
 
 
-/*---------------------------------------------
-| Main function
----------------------------------------------*/
 int main(int argc, char **argv)
 {
     /* Used variables */
@@ -127,7 +130,7 @@ int main(int argc, char **argv)
     greet();
 
     /* Initialise variables */
-    init_slog("magtisun", 3);
+    init_slog("magtisun", "slog.cfg", 3);
     init_flags(&msf);
     msl_init(&msl);
 

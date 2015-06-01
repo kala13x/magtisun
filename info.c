@@ -17,7 +17,8 @@
 const char* get_version()
 {
     static char verstr[128];
-    sprintf(verstr, "%s Build %d (%s)", VERSION, BUILD, __DATE__);
+    sprintf(verstr, "Version %d.%d Build %d (%s)", 
+        VERSION_MAX, VERSION_MIN, BUILD, __DATE__);
     return verstr;
 }
 

@@ -35,9 +35,9 @@
 
 
 /* 
- * Get library version. Function returns version and build number of 
- * magtifun c library. Return value is static char pointer.
--*/
+ * Get library version. Function returns version and build number
+ * of magtifun c library.  Return value is  static  char pointer.
+ */
 const char* msl_get_version()
 {
     static char verstr[128];
@@ -47,10 +47,9 @@ const char* msl_get_version()
 
 
 /*
- * Safe exit if there is something wrong. Function handles illegal 
- * signals, cleans up everything and exits safe. So if there will 
- * be wrong user input, broken pipe or illegal signal, lib will be 
- * protected from exploitation.
+ * Safe exit if there is  something wrong. Function handles illegal signals, 
+ * cleans up everything and exits safe. So if there will be wrong user input, 
+ * broken  pipe or  illegal  signal, lib will be protected from exploitation.
  */
 void msl_cleanup(int sig)
 {
@@ -67,10 +66,9 @@ void msl_cleanup(int sig)
 
 
 /*
- * Function decrypts recently crypted string with msl_crypt() and 
- * returns decrypted string. Return value char pointer. 
- *
- * Argument is char pointer of encrypted string.
+ * msl_decrypt - Simple dencryption of string which was 
+ * recently crypted with msl_crypt. Argument str is stryng
+ * which we want to encrypt. Return value is encrypted string.
  */
 char* msl_decrypt(char *str) 
 {
@@ -91,11 +89,9 @@ char* msl_decrypt(char *str)
 
 
 /*
- * Encrypt string. Function takes string, encrypts it and returns
- * as char pointer. Its because of we dont want to make visible
- * our authorisation data for others.
- *
- * Argument is char pointer of that string which ecnryption we want.
+ * msl_crypt - Simple encryption of string. Function takes string, 
+ * encrypts it with hex key and returns as char pointer. Argument 
+ * str is strring to encrypt. Return value is encrypted string.
  */
 char* msl_crypt(char *str)
 {
@@ -116,11 +112,10 @@ char* msl_crypt(char *str)
 
 
 /*
- * Initialize magtisun library. Function takes empty pointer of 
- * MagtiSunLib structure and initializes it for future use. It
- * also checks if user is alredy logged in and writes info in login flag.
- *
- * If user is logged in, msl->logged flag will be 1, otherwise it will be 0.
+ * msl_init - Initialize magtisun library. Function takes empty pointer of 
+ * MagtiSunLib structure and initializes it for future use. It also checks 
+ * if user is alredy logged in and writes info in login flag. If user is 
+ * logged in, msl->logged flag will be 1, otherwise logged flag will be 0.
  */
 void msl_init(MagtiSunLib* msl)
 {
@@ -177,14 +172,12 @@ void msl_init(MagtiSunLib* msl)
 
 
 /*
- * Initialise login variables from commandline input. Function initializes
- * username and password (invisible password input) from commandline and
- * saves values at:
+ * msl_cli_init - Initialise login variables from commandline input. 
+ * Function initializes username and password (invisible password input) 
+ * from commandline and saves values at MagtiSunLib structure as:
  * 
  * @ msl->usr - username
  * @ msl->pwd - password
- *
- * Argument is pointer of MagtiSunLib structure
  */
 void msl_cli_init(MagtiSunLib* msl) 
 {
@@ -199,13 +192,11 @@ void msl_cli_init(MagtiSunLib* msl)
 
 
 /*
- * Initialize sms variables from commandline input. Function initializes
- * mobile number and sms text from commandline and saves values at:
+ * msl_init_sms - Initialize sms variables from commandline input. 
+ * Function initializes mobile number and sms text from commandline.
  * 
  * @ msl->num - adress number
  * @ msl->txt - sms text
- *
- * Argument is pointer of MagtiSunLib structure
  */
 void msl_init_sms(MagtiSunLib* msl)
 {
@@ -226,7 +217,10 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
 }
 
 
-/* Check status in response */
+/* msl_check_status - Check status in response from magtifun.
+ * Function opens dumped response from magtifun and searchs
+ * success string in it. If success is found, return is 1. 
+ */
 int msl_check_status(char *fname) 
 {
     /* Used variables */
@@ -257,7 +251,15 @@ int msl_check_status(char *fname)
 }
 
 
-/* Check get info response */
+/* 
+ * msl_check_info - Parse magtifun site and get user information.
+ * Function parses magtifun page afer login and parses username
+ * and number of left messages from page. If everything is ok
+ * function returns 1 and saves information in MagtiSunLib structure:
+ *
+ * @ msl->mleft - number of left messages
+ * @ msl->name - username at magtifun
+ */
 int msl_check_info(char* fname, MagtiSunLib* msl) 
 {
     /* Used variables */
@@ -299,13 +301,13 @@ int msl_check_info(char* fname, MagtiSunLib* msl)
 
 
 /*
- * Get user information from magtifun. Function parses user and number of 
- * left messages at magtifun and saves values at (login variables must be initialized):
+ * msl_get_info - Parse magtifun site and get user information.
+ * Function parses magtifun page afer login and parses username
+ * and number of left messages from page. If everything is ok
+ * function returns 1 and saves information in MagtiSunLib structure:
  *
+ * @ msl->mleft - number of left messages
  * @ msl->name - username at magtifun
- * @ msl->mleft - left messages at magtifun
- *
- * Argument is pointer of MagtiSunLib structure
  */
 int msl_get_info(MagtiSunLib* msl) 
 {
@@ -380,13 +382,11 @@ void msl_logout()
 
 
 /*
- * Offline login. Function encrypts username and password and saves it in
- * /tmp/msl file. If you will cat that file, you will not be able to see user
- * and password which written in that file. After successful login, there is not
- * required initialization of login variables. Username and password will be
- * initialized from file with the msl_init() function.
- *
- * Argument is pointer of MagtiSunLib structure
+ * msl_login - Offline login. Function encrypts username and password and saves 
+ * it in /tmp/msl file. If you will cat that file, you will not be able to see 
+ * user and password which written in that file. After successful login, there 
+ * is not required initialization of login variables. Username and password will 
+ * be initialized from file with the msl_init() function.
  */
 int msl_login(MagtiSunLib* msl) 
 {
@@ -419,7 +419,7 @@ int msl_login(MagtiSunLib* msl)
 
 
 /*
- * Send message. After initialization of login and sms variables,
+ * msl_send - Send message. After initialization of login and sms variables,
  * function sends sms to the destination number. Here is variables which
  * must be initialized to use this function correctly:
  *
