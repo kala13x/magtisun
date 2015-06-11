@@ -5,12 +5,12 @@ OBJS = magtisun.o
 .c.o:
 	$(CC) $(CFLAGS) -c $< $(LIB)
 
-libmagtisun.a: $(OBJS)
+magtisun.a: $(OBJS)
 	$(AR) rcs magtisun.a $(OBJS)
 	@echo [-] Syncing static library
 	sync
 
-libmagtisun.o: magtisun.h
+magtisun.o: magtisun.h
 
 .PHONY: clean
 clean:
