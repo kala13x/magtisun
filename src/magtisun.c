@@ -18,8 +18,8 @@
  * Lesser General Public License for more details.
  */
 
-#include "libmagtisun/libmagtisun.h"
-#include "libslog/slog.h"
+#include "../magtisun/magtisun.h"
+#include "../slog/slog.h"
 #include "stdinc.h"
 #include "info.h"
 
@@ -129,8 +129,11 @@ int main(int argc, char **argv)
     /* Greet users */
     greet();
 
-    /* Initialise variables */
-    init_slog("magtisun", "slog.cfg", 3);
+    /* Initialise logger */
+    init_slog("magtisun", "config.cfg", 3);
+    slog(0, SLOG_INFO, "Logger: %s", slog_version(1));
+
+    /* Initialize variables */
     init_flags(&msf);
     msl_init(&msl);
 
@@ -144,13 +147,13 @@ int main(int argc, char **argv)
     /* Check logout argument */
     if (msf.logout) 
     {
-        slog(0, "[LIVE] Logging out");
+        slog(0, SLOG_LIVE, "Logging out");
         msl_logout();
     }
 
     /* Check logged user */
     if (msl.logged) 
-        slog(0, "[LIVE] Logged in as: %s", msl.usr);
+        slog(0, SLOG_LIVE, "Logged in as: %s", msl.usr);
 
     /* Login user */
     if (msf.login)
@@ -158,7 +161,7 @@ int main(int argc, char **argv)
         /* Check logged user */
         if (msl.logged) 
         {
-            slog(0, "[LIVE] Please log out first");
+            slog(0, SLOG_LIVE, "Please log out first");
             exit(0);
         }
 
@@ -167,14 +170,14 @@ int main(int argc, char **argv)
 
         /* Do login */
         if(msl_login(&msl)) 
-            slog(0, "[LIVE] Logged in as: %s", msl.usr);
+            slog(0, SLOG_LIVE, "Logged in as: %s", msl.usr);
         exit(0);
     }
 
     /* Check valid username and password */
     if (strlen(msl.usr) < 4 || strlen(msl.pwd) < 4) 
     {
-        slog(0, "[LIVE] Not logged in");
+        slog(0, SLOG_LIVE, "Not logged in");
         user_init_info(&msl);
     }
 
@@ -184,15 +187,15 @@ int main(int argc, char **argv)
         /* Get info */
         if(msl_get_info(&msl) >= 0) 
         {
-            slog(0, "[LIVE] User: %s", msl.name);
-            slog(0, "[LIVE] Messages left: %d", msl.mleft);
+            slog(0, SLOG_LIVE, "User: %s", msl.name);
+            slog(0, SLOG_LIVE, "Messages left: %d", msl.mleft);
             exit(0);
         }
         else 
         {
-            slog(0, "[ERROR] Can not get info");
-            slog(0, "[INFO] The reason can be wrong username and/or password");
-            slog(0, "[INFO] Also make sure magtifun.ge is not down");
+            slog(0, SLOG_ERROR, "Can not get info");
+            slog(0, SLOG_INFO, "The reason can be wrong username and/or password");
+            slog(0, SLOG_INFO, "Also make sure magtifun.ge is not down");
             exit(0);
         }
     }
@@ -201,10 +204,10 @@ int main(int argc, char **argv)
     user_init_sms(&msl);
 
     /* Send sms */
-    slog(0, "[LIVE] Sending message...");
+    slog(0, SLOG_LIVE, "Sending message...");
     if (msl_send(&msl) >= 0) 
     {
-        slog(0, "[LIVE] Message sent");
+        slog(0, SLOG_LIVE, "Message sent");
 
         /* Stay logged */
         if (!msl.logged) 
@@ -218,15 +221,15 @@ int main(int argc, char **argv)
             if (strcmp(answer, "y") == 0 || strcmp(answer, "Y") == 0) 
             {
                 if(msl_login(&msl))
-                    slog(0, "[LIVE] Saved logged session");
+                    slog(0, SLOG_LIVE, "Saved logged session");
             }
         }
     }
     else 
     {
-        slog(0, "[ERROR] Can not send sms");
-        slog(0, "[INFO] The reason can be wrong username and/or password");
-        slog(0, "[INFO] Also make sure magtifun.ge is not down");
+        slog(0, SLOG_ERROR, "Can not send sms");
+        slog(0, SLOG_INFO, "The reason can be wrong username and/or password");
+        slog(0, SLOG_INFO, "Also make sure magtifun.ge is not down");
     }
 
     return 0;

@@ -1,15 +1,17 @@
 #!/bin/bash
 
-cd ${PWD##}/libmagtisun
+cd ${PWD##}/magtisun
 make clean
 make
 
-cd ../libslog
+cd ../slog
+make clean
+make
+
+cd ../src
 make clean
 make
 
 cd ..
-make clean
-make
 
 echo "[-] Build done"
