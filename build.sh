@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ${PWD##}/magtisun
+cd ${PWD##}/lib
 make clean
 make
 

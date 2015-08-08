@@ -40,9 +40,11 @@
  */
 const char* msl_get_version()
 {
-    static char verstr[128];
-    sprintf(verstr, "%s Build %d (%s)", MSLVERSION, MSLBUILD, __DATE__);
-    return verstr;
+    static char mslver[128];
+    sprintf(mslver, "%d.%d build %d (%s)", 
+        MSLVERSION_MAX, MSLVERSION_MIN, MSLBUILD, __DATE__);
+
+    return mslver;
 }
 
 
@@ -91,7 +93,7 @@ char* msl_decrypt(char *str)
 /*
  * msl_crypt - Simple encryption of string. Function takes string, 
  * encrypts it with hex key and returns as char pointer. Argument 
- * str is strring to encrypt. Return value is encrypted string.
+ * str is string to encrypt. Return value is encrypted string.
  */
 char* msl_crypt(char *str)
 {
@@ -168,45 +170,6 @@ void msl_init(MagtiSunLib* msl)
         }
         fclose(fp);
     }
-}
-
-
-/*
- * msl_cli_init - Initialise login variables from commandline input. 
- * Function initializes username and password (invisible password input) 
- * from commandline and saves values at MagtiSunLib structure as:
- * 
- * @ msl->usr - username
- * @ msl->pwd - password
- */
-void msl_cli_init(MagtiSunLib* msl) 
-{
-    /* Get username */
-    printf("MagtiSun: Enter Username: ");
-    scanf("%s", msl->usr);
-
-    /* Get password (invisible) */
-    char* pwd = getpass("MagtiSun: Enter Password: ");
-    strcpy(msl->pwd, pwd);
-}
-
-
-/*
- * msl_init_sms - Initialize sms variables from commandline input. 
- * Function initializes mobile number and sms text from commandline.
- * 
- * @ msl->num - adress number
- * @ msl->txt - sms text
- */
-void msl_init_sms(MagtiSunLib* msl)
-{
-    /* Get number */
-    printf("MagtiSun: Enter Number: ");
-    scanf("%s", msl->num);
-
-    /* Get sms text */
-    printf("MagtiSun: Enter Text: ");
-    scanf("%s", msl->txt);
 }
 
 

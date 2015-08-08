@@ -18,7 +18,7 @@
  * Lesser General Public License for more details.
  */
 
-#include "../magtisun/magtisun.h"
+#include "../lib/magtisun.h"
 #include "../slog/slog.h"
 #include "stdinc.h"
 #include "info.h"
@@ -32,10 +32,6 @@ typedef struct {
 } MagtiSunFlags;
 
 
-/* 
- * init_flags - Initialise MagtiSun flags.
- * Function gives sets 0 to each flag.
- */
 void init_flags(MagtiSunFlags* msf) 
 {
     msf->info = 0;
@@ -44,52 +40,35 @@ void init_flags(MagtiSunFlags* msf)
 }
 
 
-/*
- * user_init_info - Initialise login variables from commandline input. 
- * Function initializes username and password (invisible password input) 
- * from commandline and saves values at MagtiSunLib structure as:
- * 
- * @ msl->usr - username
- * @ msl->pwd - password
- */
- void user_init_info(MagtiSunLib* msl) 
+void init_info(MagtiSunLib* msl) 
 {
-    /* String variable */
-    char *str;
-
     /* Get username */
-    str = ret_slog("[INPUT] Enter Username: ");
-    printf("%s", str);
+    printf("%s", ret_slog("[INPUT] Enter Username: "));
     scanf("%s", msl->usr);
 
-    /* Get password (invisible) */
-    str = ret_slog("[INPUT] Enter Password: ");
-    char* pwd = getpass(str);
+    /* Get password (hidden input) */
+    char* pwd = getpass(ret_slog("[INPUT] Enter Password: "));
     strcpy(msl->pwd, pwd);
 }
 
 
-/*
- * msl_init_sms - Initialize sms variables from commandline input. 
- * Function initializes mobile number and sms text from commandline.
- * 
- * @ msl->num - adress number
- * @ msl->txt - sms text
- */
-void user_init_sms(MagtiSunLib* msl)
+void init_sms(MagtiSunLib* msl)
 {
-    /* String variable */
-    char *str;
-
     /* Get number */
-    str = ret_slog("[INPUT] Enter Number: ");
-    printf("%s", str);
+    printf("%s", ret_slog("[INPUT] Enter Number: "));
     scanf("%s", msl->num);
 
     /* Get sms text */
-    str = ret_slog("[INPUT] Enter Text: ");
-    printf("%s", str);
+    printf("%s", ret_slog("[INPUT] Enter Text: "));
     scanf("%s", msl->txt);
+}
+
+
+void err_exit(char *message) 
+{
+    slog(0, SLOG_ERROR, "%s", message);
+    slog(0, SLOG_INFO, "The reason can be wrong username and/or password");
+    slog(0, SLOG_INFO, "Also make sure magtifun.ge is not down");
 }
 
 
@@ -124,61 +103,43 @@ int main(int argc, char **argv)
     MagtiSunFlags msf;
     MagtiSunLib msl;
     char answer[8];
-    char* str;
 
     /* Greet users */
     greet();
 
-    /* Initialise logger */
-    init_slog("magtisun", "config.cfg", 3);
-    slog(0, SLOG_INFO, "Logger: %s", slog_version(1));
-
-    /* Initialize variables */
+    /* Initialise everything */
     init_flags(&msf);
     msl_init(&msl);
 
     /* Parse Commandline Arguments */
-    if (parse_arguments(argc, argv, &msf) < 0) 
-    { 
-        usage();
-        return 0;
-    }
-
-    /* Check logout argument */
-    if (msf.logout) 
-    {
-        slog(0, SLOG_LIVE, "Logging out");
-        msl_logout();
-    }
-
-    /* Check logged user */
-    if (msl.logged) 
-        slog(0, SLOG_LIVE, "Logged in as: %s", msl.usr);
+    if (parse_arguments(argc, argv, &msf) < 0) { usage(); return 0; }
+    if (msf.logout) { slog(0, SLOG_LIVE, "Logging out"); msl_logout(); }
+    if (msl.logged) slog(0, SLOG_INFO, "Logged in as: %s", msl.usr);
 
     /* Login user */
     if (msf.login)
     {
         /* Check logged user */
         if (msl.logged) 
-        {
-            slog(0, SLOG_LIVE, "Please log out first");
-            exit(0);
+        { 
+            slog(0, SLOG_LIVE, "Please log out first"); 
+            exit(0); 
         }
 
         /* User input info */
-        user_init_info(&msl);
+        init_info(&msl);
 
-        /* Do login */
         if(msl_login(&msl)) 
-            slog(0, SLOG_LIVE, "Logged in as: %s", msl.usr);
+            slog(0, SLOG_INFO, "Logged in as: %s", msl.usr);
+
         exit(0);
     }
 
     /* Check valid username and password */
     if (strlen(msl.usr) < 4 || strlen(msl.pwd) < 4) 
     {
-        slog(0, SLOG_LIVE, "Not logged in");
-        user_init_info(&msl);
+        slog(0, SLOG_INFO, "Not logged in");
+        init_info(&msl);
     }
 
     /* Check info */
@@ -191,17 +152,11 @@ int main(int argc, char **argv)
             slog(0, SLOG_LIVE, "Messages left: %d", msl.mleft);
             exit(0);
         }
-        else 
-        {
-            slog(0, SLOG_ERROR, "Can not get info");
-            slog(0, SLOG_INFO, "The reason can be wrong username and/or password");
-            slog(0, SLOG_INFO, "Also make sure magtifun.ge is not down");
-            exit(0);
-        }
+        else err_exit("Can not get info");
     }
 
     /* Read sms info from user input */
-    user_init_sms(&msl);
+    init_sms(&msl);
 
     /* Send sms */
     slog(0, SLOG_LIVE, "Sending message...");
@@ -213,24 +168,15 @@ int main(int argc, char **argv)
         if (!msl.logged) 
         {
             /* User input answer */
-            str = ret_slog("[LIVE] Do you want to stay logged? (y/n): ");
-            printf("%s", str);
+            printf("%s", ret_slog("[LIVE]  Do you want to stay logged? (y/n): "));
             scanf("%s", answer);
 
             /* Check answer answer */
-            if (strcmp(answer, "y") == 0 || strcmp(answer, "Y") == 0) 
-            {
-                if(msl_login(&msl))
-                    slog(0, SLOG_LIVE, "Saved logged session");
-            }
+            if (strcmp(answer, "y") == 0 || strcmp(answer, "Y") == 0)
+                if(msl_login(&msl)) slog(0, SLOG_LIVE, "Saved logged session");
         }
     }
-    else 
-    {
-        slog(0, SLOG_ERROR, "Can not send sms");
-        slog(0, SLOG_INFO, "The reason can be wrong username and/or password");
-        slog(0, SLOG_INFO, "Also make sure magtifun.ge is not down");
-    }
+    else err_exit("Can not send sms");
 
     return 0;
 }

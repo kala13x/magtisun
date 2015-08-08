@@ -1,18 +1,25 @@
 /*
- *  slog is Advanced logging library for C/C++
+ * The MIT License (MIT)
+ *  
+ *  Copyleft (C) 2015  Sun Dro (a.k.a. kala13x)
  *
- *  Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost)
- *  Web: http://off-sec.com/ ; E-Mail: kala0x13@gmail.com
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * This is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
  */
 
 
@@ -39,14 +46,14 @@
 #define MAXMSG 8196
 
 /* Flags */
-static slog_flags slg;
+static SlogFlags slg;
 
 
 /*
- * get_system_date - Intialize date with system date.
- * Argument is pointer of SystemDate structure.
+ * get_slog_date - Intialize date with system date.
+ * Argument is pointer of SlogDate structure.
  */
-void get_system_date(SystemDate *mdate)
+void get_slog_date(SlogDate *sdate)
 {
     time_t rawtime;
     struct tm *timeinfo;
@@ -54,12 +61,12 @@ void get_system_date(SystemDate *mdate)
     timeinfo = localtime(&rawtime);
 
     /* Get System Date */
-    mdate->year = timeinfo->tm_year+1900;
-    mdate->mon = timeinfo->tm_mon+1;
-    mdate->day = timeinfo->tm_mday;
-    mdate->hour = timeinfo->tm_hour;
-    mdate->min = timeinfo->tm_min;
-    mdate->sec = timeinfo->tm_sec;
+    sdate->year = timeinfo->tm_year+1900;
+    sdate->mon = timeinfo->tm_mon+1;
+    sdate->day = timeinfo->tm_mday;
+    sdate->hour = timeinfo->tm_hour;
+    sdate->min = timeinfo->tm_min;
+    sdate->sec = timeinfo->tm_sec;
 }
 
 
@@ -90,6 +97,16 @@ const char* slog_version(int min)
  * and returns colorized string as char pointer. First argument clr
  * is color value (if it is invalid, function retunrs NULL) and second
  * is string with va_list of arguments which one we want to colorize.
+ * 
+ * Color values are:
+ *  0 - Normal
+ *  1 - Green
+ *  2 - Red
+ *  3 - Yellow
+ *  4 - Blue
+ *  5 - Nagenta
+ *  6 - Cyan
+ *  7 - White
  */
 char* strclr(int clr, char* str, ...)
 {
@@ -141,17 +158,17 @@ char* strclr(int clr, char* str, ...)
 
 /*
  * log_to_file - Save log in file. Argument aut is string which
- * we want to log. Argument fname is log file path and mdate is
- * SystemDate structure variable, we need it to create filename.
+ * we want to log. Argument fname is log file path and sdate is
+ * SlogDate structure variable, we need it to create filename.
  */
-void log_to_file(char *out, const char *fname, SystemDate *mdate)
+void log_to_file(char *out, const char *fname, SlogDate *sdate)
 {
     /* Used variables */
     char filename[PATH_MAX];
 
     /* Create log filename with date */
     sprintf(filename, "%s-%02d-%02d-%02d.log",
-        fname, mdate->year, mdate->mon, mdate->day);
+        fname, sdate->year, sdate->mon, sdate->day);
 
     /* Open file pointer */
     FILE *fp = fopen(filename, "a");
@@ -177,11 +194,11 @@ int parse_config(const char *cfg_name)
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
-    int ret = 1;
+    int ret = 0;
 
     /* Open file pointer */
     file = fopen(cfg_name, "r");
-    if(file == NULL) return 1;
+    if(file == NULL) return 0;
 
     /* Line-by-line read cfg file */
     while ((read = getline(&line, &len, file)) != -1)
@@ -191,13 +208,19 @@ int parse_config(const char *cfg_name)
         {
             /* Get log level */
             slg.level = atoi(line+8);
-            ret = 0;
+            ret = 1;
         }
         else if(strstr(line, "LOGTOFILE") != NULL)
         {
             /* Get log level */
             slg.to_file = atoi(line+9);
-            ret = 0;
+            ret = 1;
+        }
+        else if(strstr(line, "PRETTYLOG") != NULL)
+        {
+            /* Get log type */
+            slg.pretty = atoi(line+9);
+            ret = 1;
         }
     }
 
@@ -219,10 +242,10 @@ char* ret_slog(char *msg, ...)
     /* Used variables */
     static char output[MAXMSG];
     char string[MAXMSG];
-    SystemDate mdate;
+    SlogDate sdate;
 
     /* initialise system date */
-    get_system_date(&mdate);
+    get_slog_date(&sdate);
 
     /* Read args */
     va_list args;
@@ -232,8 +255,8 @@ char* ret_slog(char *msg, ...)
 
     /* Generate output string with date */
     sprintf(output, "%02d.%02d.%02d-%02d:%02d:%02d - %s",
-        mdate.year, mdate.mon, mdate.day, mdate.hour,
-        mdate.min, mdate.sec, string);
+        sdate.year, sdate.mon, sdate.day, sdate.hour,
+        sdate.min, sdate.sec, string);
 
     /* Return output */
     return output;
@@ -249,13 +272,13 @@ char* ret_slog(char *msg, ...)
 void slog(int level, int flag, const char *msg, ...)
 {
     /* Used variables */
-    SystemDate mdate;
+    SlogDate sdate;
     char string[MAXMSG];
     char prints[MAXMSG];
     char *output;
 
     /* Initialise system date */
-    get_system_date(&mdate);
+    get_slog_date(&sdate);
 
     /* Read args */
     va_list args;
@@ -299,8 +322,13 @@ void slog(int level, int flag, const char *msg, ...)
         /* Save log in file */
         if (slg.to_file)
         {
-            output = ret_slog("%s\n", string);
-            log_to_file(output, slg.fname, &mdate);
+            if (slg.pretty)
+                output = ret_slog("%s\n", prints);
+            else
+                output = ret_slog("%s\n", string);
+
+            /* Add log line to file */
+            log_to_file(output, slg.fname, &sdate);
         }
     }
 }
@@ -314,15 +342,21 @@ void slog(int level, int flag, const char *msg, ...)
  */
 void init_slog(const char* fname, const char* conf, int lvl)
 {
+    int status = 0;
+
+    /* Set up default values */
     slg.level = lvl;
-    slg.fname = fname;
     slg.to_file = 0;
+    slg.pretty = 0;
 
     /* Parse config file */
-    if (parse_config(conf))
+    if (conf != NULL) 
     {
-        //slog(0, SLOG_WARN, "LOGLEVEL and/or LOGTOFILE flag is not set from config.");
-
-        return;
+        slg.fname = fname;
+        status = parse_config(conf);
     }
+
+    /* Handle config parser status */
+    if (!status) slog(0, SLOG_INFO, "Initializing logger values without config");
+    else slog(0, SLOG_INFO, "Loading logger config from: %s", conf);
 }

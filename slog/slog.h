@@ -1,20 +1,29 @@
 /*
- *  slog is Advanced logging library for C/C++
+ * The MIT License (MIT)
+ *  
+ *  Copyleft (C) 2015  Sun Dro (a.k.a. kala13x)
  *
- *  Copyright (c) 2015 Sun Dro (a.k.a. 7th Ghost)
- *  Web: http://off-sec.com/ ; E-Mail: kala0x13@gmail.com
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * This is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
  *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
  */
 
+#ifndef __LIB_SLOG_H__
+#define __LIB_SLOG_H__
 
 /* For include header in CPP code */
 #ifdef __cplusplus
@@ -24,8 +33,8 @@ extern "C" {
 
 /* Definations for version info */
 #define SLOGVERSION_MAX  1
-#define SLOGVERSION_MIN  2
-#define SLOGBUILD_NUM    63
+#define SLOGVERSION_MIN  4
+#define SLOGBUILD_NUM    70
 
 
 /* Loging flags */
@@ -46,7 +55,7 @@ typedef struct {
     int hour;
     int min;
     int sec;
-} SystemDate;
+} SlogDate;
 
 
 /* Flags */
@@ -54,7 +63,15 @@ typedef struct {
     const char* fname;
     int level;
     int to_file;
-} slog_flags;
+    int pretty;
+} SlogFlags;
+
+
+/*
+ * get_slog_date - Intialize date with system date.
+ * Argument is pointer of SlogDate structure.
+ */
+void get_slog_date(SlogDate *sdate);
 
 
 /*
@@ -71,6 +88,16 @@ const char* slog_version(int min);
  * and returns colorized string as char pointer. First argument clr
  * is color value (if it is invalid, function retunrs NULL) and second
  * is string with va_list of arguments which one we want to colorize.
+ * 
+ * Color values are:
+ *  0 - Normal
+ *  1 - Green
+ *  2 - Red
+ *  3 - Yellow
+ *  4 - Blue
+ *  5 - Nagenta
+ *  6 - Cyan
+ *  7 - White
  */
 char* strclr(int clr, char* str, ...);
 
@@ -104,4 +131,6 @@ void slog(int level, int flag, const char *msg, ...);
 /* For include header in CPP code */
 #ifdef __cplusplus
 }
+#endif
+
 #endif
