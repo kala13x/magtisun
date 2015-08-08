@@ -18,6 +18,8 @@
  * Lesser General Public License for more details.
  */
 
+#ifndef __LIB_MAGTISUN_H__
+#define __LIB_MAGTISUN_H__
 
 /* For include header in CPP code */
 #ifdef __cplusplus
@@ -113,4 +115,6 @@ void msl_logout();
 /* For include header in CPP code */
 #ifdef __cplusplus
 }
+#endif
+
 #endif
